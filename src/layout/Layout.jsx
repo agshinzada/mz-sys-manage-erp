@@ -1,49 +1,20 @@
-import { SnippetsOutlined, DollarOutlined } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Button, Layout, theme } from "antd";
 import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import MainFooter from "../components/Footer/Footer";
+import MenuItem from "../components/Menu/MenuItem";
+import { useAuth } from "../context/AuthContext";
+import { encryptStorage } from "../utils/storage";
 const { Header, Content, Sider } = Layout;
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-const items = [
-  //   getItem("Dashboard", "2", <DesktopOutlined />),
-  getItem("Orders", 1, <SnippetsOutlined />, [
-    getItem("List", "3"),
-    // getItem("Bill", "4"),
-    // getItem("Alex", "5"),
-  ]),
-  getItem("Payments", 2, <DollarOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "7"),
-  ]),
-  //   getItem("Files", "9", <FileOutlined />),
-];
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const { setUser } = useAuth();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  const navigate = useNavigate();
 
-  function handleMenu(event) {
-    switch (parseInt(event.key)) {
-      case 3:
-        navigate("orders/list");
-        break;
-
-      default:
-        break;
-    }
-  }
   return (
     <Layout
       style={{
@@ -59,13 +30,7 @@ const MainLayout = () => {
           <img src={logo} alt="logo" className="w-8" />
           <h1 className="text-white text-[17px] font-bold">SYS manage</h1>
         </div>
-        <Menu
-          theme="dark"
-          defaultSelectedKeys={["1"]}
-          mode="inline"
-          onClick={handleMenu}
-          items={items}
-        />
+        <MenuItem />
       </Sider>
       <Layout>
         <Header
@@ -75,7 +40,15 @@ const MainLayout = () => {
           }}
           className="flex justify-end items-center"
         >
-          <Button className="mr-5">Çıxış</Button>
+          <Button
+            className="mr-5"
+            onClick={() => {
+              setUser(false);
+              encryptStorage.clear();
+            }}
+          >
+            Çıxış
+          </Button>
         </Header>
         <Content
           style={{
