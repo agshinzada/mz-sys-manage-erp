@@ -1,4 +1,4 @@
-import { Button, Form, Input, Table, Tag } from "antd";
+import { Button, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 
 import {
@@ -65,7 +65,7 @@ const VisitDayPage = () => {
   return (
     <div>
       <PageTitle title={"vizit günləri"} />
-      <div className="flex justify-between mb-5 items-center">
+      <div className="flex justify-between items-center">
         <SearchForm onFinish={onFinish} />
         <Button onClick={getData}>Yenilə</Button>
       </div>

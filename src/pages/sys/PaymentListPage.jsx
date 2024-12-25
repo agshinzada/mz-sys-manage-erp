@@ -1,6 +1,5 @@
 import { Button, Form, Input, Select, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
-import { brands, statusCode } from "../../utils/variables";
 import formatDateTime from "../../utils/usableFunc";
 import {
   fetchPayments,
@@ -28,14 +27,12 @@ const PaymentListPage = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Brend id",
-      dataIndex: "brend_id",
-      key: "brend_id",
-      render: (_, { brend_id }) => (
+      title: "Brend",
+      dataIndex: "BRAND_NAME",
+      key: "BRAND_NAME",
+      render: (_, { BRAND_NAME }) => (
         <>
-          <Tag color="blue" key={brend_id}>
-            {brands.find((br) => br.id === parseInt(brend_id)).name}
-          </Tag>
+          <Tag color="blue">{BRAND_NAME}</Tag>
         </>
       ),
     },
@@ -97,14 +94,9 @@ const PaymentListPage = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (_, { status }) => (
+      render: (_, record) => (
         <>
-          <Tag
-            color={statusCode.find((st) => st.id === parseInt(status)).color}
-            key={status.id}
-          >
-            {statusCode.find((st) => st.id === parseInt(status)).name}
-          </Tag>
+          <Tag color={record.STATUS_COLOR}>{record.STATUS_NAME}</Tag>
         </>
       ),
     },
@@ -156,7 +148,7 @@ const PaymentListPage = () => {
           onFinish={onFinish}
           autoComplete="off"
         >
-          <div className="flex gap-5">
+          <div className="flex gap-2">
             <Form.Item
               label="Param"
               name="param"

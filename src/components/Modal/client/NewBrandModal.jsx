@@ -61,7 +61,7 @@ const NewBrandModal = ({ isOpen, setIsOpen, loading, handleData }) => {
             <Input />
           </Form.Item>
           <Form.Item
-            label="NR"
+            label="SYS_ID"
             name="nr"
             rules={[
               {

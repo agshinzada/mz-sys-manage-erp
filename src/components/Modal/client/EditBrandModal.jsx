@@ -14,9 +14,9 @@ const EditBrandModal = ({
     if (current) {
       form.setFieldsValue({
         name: current?.NAME,
-        type: current?.TYPE,
-        code: current?.CODE,
-        nr: current?.NR,
+        type: current?.BRAND_TYPE,
+        code: current?.BRAND_CODE,
+        nr: current?.SYS_ID,
         status: current?.STATUS,
       });
     }
@@ -82,7 +82,7 @@ const EditBrandModal = ({
             <Input />
           </Form.Item>
           <Form.Item
-            label="NR"
+            label="SYS_ID"
             name="nr"
             rules={[
               {

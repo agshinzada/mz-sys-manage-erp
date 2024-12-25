@@ -8,69 +8,81 @@ import {
   fetchClientLogsBySearch,
 } from "../../services/client/log_service";
 import SearchForm from "../../utils/SearchForm";
+import {
+  fetchArchiveLogs,
+  fetchArchiveLogsBySearch,
+} from "../../services/archive/log_service";
+import formatDateTime from "../../utils/usableFunc";
 
-const LogPage = () => {
+const ArchiveLogPage = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
   const columns = [
     {
-      title: "User_ID",
-      dataIndex: "USER_ID",
-      key: "USER_ID",
+      title: "EXTRACTED_FICHENO",
+      dataIndex: "EXTRACTED_FICHENO",
+      key: "EXTRACTED_FICHENO",
+      render: (_, { EXTRACTED_FICHENO }) => (
+        <>
+          <Tag color="gray" key={EXTRACTED_FICHENO}>
+            {EXTRACTED_FICHENO}
+          </Tag>
+        </>
+      ),
     },
     {
-      title: "USERNAME",
-      dataIndex: "USERNAME",
-      key: "USERNAME",
-    },
-
-    {
-      title: "Kod",
-      dataIndex: "CODE",
-      key: "CODE",
-      render: (text) => <Tag color="green">{text}</Tag>,
-    },
-    {
-      title: "OLD_DEFINITION_",
-      key: "OLD_DEFINITION_",
-      dataIndex: "OLD_DEFINITION_",
-    },
-    {
-      title: "NEW_DEFINITION_",
-      key: "NEW_DEFINITION_",
-      dataIndex: "NEW_DEFINITION_",
-    },
-    {
-      title: "OLD_TAXNR",
-      key: "OLD_TAXNR",
-      dataIndex: "OLD_TAXNR",
-    },
-    {
-      title: "NEW_TAXNR",
-      key: "NEW_TAXNR",
-      dataIndex: "NEW_TAXNR",
+      title: "EXTRACTED_TYPE",
+      dataIndex: "EXTRACTED_TYPE",
+      key: "EXTRACTED_TYPE",
     },
 
     {
-      title: "DATE",
-      dataIndex: "DATE",
-      key: "DATE",
-      render: (_, { DATE }) => <>{new Date(DATE).toLocaleDateString("az")}</>,
+      title: "GENERATED_FILENAME",
+      dataIndex: "GENERATED_FILENAME",
+      key: "GENERATED_FILENAME",
+    },
+    {
+      title: "ORG_FILENAME",
+      key: "ORG_FILENAME",
+      dataIndex: "ORG_FILENAME",
+    },
+    {
+      title: "FILEPATH",
+      key: "FILEPATH",
+      dataIndex: "FILEPATH",
+    },
+    {
+      title: "LOGTYPE",
+      key: "LOGTYPE",
+      dataIndex: "LOGTYPE",
+      render: (_, { LOGTYPE }) => (
+        <>
+          <Tag color={`${LOGTYPE === 1 ? "green" : "red"}`} key={LOGTYPE}>
+            {LOGTYPE === 1 ? "SUCCESS" : "UNREAD"}
+          </Tag>
+        </>
+      ),
+    },
+    {
+      title: "INSERT_DATE",
+      key: "INSERT_DATE",
+      dataIndex: "INSERT_DATE",
+      render: (_, { INSERT_DATE }) => <>{formatDateTime(INSERT_DATE, -4)}</>,
     },
   ];
 
   async function onFinish(params) {
     setLoading(true);
-    const data = await fetchClientLogsBySearch(params.value, user.TOKEN);
+    const data = await fetchArchiveLogsBySearch(params.value, user.TOKEN);
     setDataSource(data);
     setLoading(false);
   }
 
   async function getData() {
     setLoading(true);
-    const data = await fetchClientLogs(user.TOKEN);
+    const data = await fetchArchiveLogs(user.TOKEN);
     setDataSource(data);
     setLoading(false);
   }
@@ -104,4 +116,4 @@ const LogPage = () => {
   );
 };
 
-export default LogPage;
+export default ArchiveLogPage;

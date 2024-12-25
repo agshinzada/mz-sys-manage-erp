@@ -6,7 +6,6 @@ import {
   fetchOrders,
   fetchOrdersByParam,
 } from "../../services/order_service";
-import { brands, orderKindCode, statusCode } from "../../utils/variables";
 import formatDateTime from "../../utils/usableFunc";
 import OrderLineModal from "../../components/Modal/OrderLineModal";
 import DeviceDetailModal from "../../components/Modal/DeviceDetailModal";
@@ -14,6 +13,7 @@ import { fetchDeviceById } from "../../services/device_service";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/AuthContext";
 import PageTitle from "../../utils/PageTitle";
+import OrderConfirmTimer from "../../components/tools/OrderConfirmTimer";
 
 const OrderListPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -35,18 +35,9 @@ const OrderListPage = () => {
       key: "orderkind",
       ellipsis: true,
 
-      render: (_, { orderkind }) => (
+      render: (_, record) => (
         <>
-          <Tag
-            color={
-              orderKindCode.find((st) => st.id === parseInt(orderkind))
-                ?.color || orderkind
-            }
-            key={orderkind.id}
-          >
-            {orderKindCode.find((st) => st.id === parseInt(orderkind))?.name ||
-              orderkind}
-          </Tag>
+          <Tag color={record?.ORDERKIND_COLOR}>{record?.ORDERKIND_NAME}</Tag>
         </>
       ),
     },
@@ -66,16 +57,8 @@ const OrderListPage = () => {
             okText="Yenidən yüklə"
             cancelText="Sifarişi ləğv et"
           >
-            <Tag
-              color={
-                statusCode.find((st) => st.id === parseInt(record.status))
-                  ?.color || record.status
-              }
-              className="cursor-pointer"
-              key={record.status}
-            >
-              {statusCode.find((st) => st.id === parseInt(record.status))
-                ?.name || record.status}
+            <Tag color={record?.STATUS_COLOR} className="cursor-pointer">
+              {record?.STATUS_NAME}
             </Tag>
           </Popconfirm>
         </>
@@ -83,15 +66,13 @@ const OrderListPage = () => {
     },
 
     {
-      title: "Brend id",
-      dataIndex: "brend_id",
-      key: "brend_id",
+      title: "Brend",
+      dataIndex: "BRAND_NAME",
+      key: "BRAND_NAME",
       ellipsis: true,
-      render: (_, { brend_id }) => (
+      render: (_, { BRAND_NAME }) => (
         <>
-          <Tag color="blue" key={brend_id}>
-            {brands.find((br) => br.id === parseInt(brend_id))?.name}
-          </Tag>
+          <Tag color="blue">{BRAND_NAME}</Tag>
         </>
       ),
     },
@@ -192,7 +173,7 @@ const OrderListPage = () => {
 
   async function reloadOrder(id) {
     Swal.fire({
-      title: "Sifariş yenidən yüklənəcək!",
+      text: "Sifariş yenidən yüklənəcək!",
       showCancelButton: true,
       confirmButtonText: "Bəli",
       cancelButtonText: "İmtina",
@@ -244,6 +225,7 @@ const OrderListPage = () => {
   return (
     <div>
       <PageTitle title={"sifariş paneli"} />
+      <OrderConfirmTimer />
       <div className="flex justify-between items-center">
         <Form
           name="orderfilter"
@@ -255,7 +237,7 @@ const OrderListPage = () => {
           onFinish={onFinish}
           autoComplete="off"
         >
-          <div className="flex gap-5">
+          <div className="flex gap-2">
             <Form.Item
               label="Param"
               name="param"

@@ -36,6 +36,32 @@ export async function fetchNewUser(data, token) {
   }
 }
 
+export async function fetchPutSysUser(id, data, token) {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/auth/users/${id}?token=${token}`,
+      data
+    );
+    notification.error({ message: response.data });
+  } catch (error) {
+    notification.error({ message: error.response.data });
+  }
+}
+
+export async function fetchPutSysUserPassword(id, data, token) {
+  try {
+    const response = await axios.put(
+      `${
+        import.meta.env.VITE_API_URL
+      }/auth/users/password/${id}?token=${token}`,
+      data
+    );
+    notification.error({ message: response.data });
+  } catch (error) {
+    notification.error({ message: error.response.data });
+  }
+}
+
 export async function fetchLogin(data) {
   try {
     const res = await axios.post(

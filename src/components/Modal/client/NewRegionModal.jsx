@@ -37,8 +37,8 @@ const NewRegionModal = ({ isOpen, setIsOpen, loading, handleData }) => {
         </Form.Item>
         <div className="flex gap-4">
           <Form.Item
-            label="Root ID"
-            name="rootId"
+            label="SYS ID"
+            name="sysId"
             rules={[
               {
                 required: true,

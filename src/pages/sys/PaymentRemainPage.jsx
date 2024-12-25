@@ -90,7 +90,7 @@ const PaymentRemainPage = () => {
           onFinish={onFinish}
           autoComplete="off"
         >
-          <div className="flex gap-5">
+          <div className="flex gap-2">
             <Form.Item
               label="Region"
               name="region"

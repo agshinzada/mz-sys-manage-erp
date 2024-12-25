@@ -1,12 +1,16 @@
-import { Button, Form, Input, Table, Tag } from "antd";
+import { Button, Form, Input, notification, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 
 import {
   fetchNewUser,
+  fetchPutSysUser,
+  fetchPutSysUserPassword,
   fetchSysUsers,
   fetchSysUsersByParam,
 } from "../../services/user_service";
 import NewUserModal from "../../components/Modal/NewUserModal";
+import EditUserModal from "../../components/Modal/EditUserModal";
+import ChangePasswordModal from "../../components/Modal/ChangePasswordModal";
 import bcrypt from "bcryptjs";
 import { useAuth } from "../../context/AuthContext";
 import PageTitle from "../../utils/PageTitle";
@@ -14,8 +18,10 @@ import PageTitle from "../../utils/PageTitle";
 const SysUsersPage = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [newModalLoading, setNewModalLoading] = useState(false);
   const [newIsOpen, setNewIsOpen] = useState(false);
+  const [editIsOpen, setEditIsOpen] = useState(false);
+  const [changePassIsOpen, setChangePassIsOpen] = useState(false);
+  const [currentData, setCurrentData] = useState(false);
   const { user } = useAuth();
 
   const columns = [
@@ -34,6 +40,19 @@ const SysUsersPage = () => {
       title: "Username",
       dataIndex: "USERNAME",
       key: "USERNAME",
+      render: (_, record) => (
+        <>
+          <Button
+            type="link"
+            onClick={() => {
+              setCurrentData(record);
+              setEditIsOpen(true);
+            }}
+          >
+            {record.USERNAME}
+          </Button>
+        </>
+      ),
     },
     {
       title: "Role",
@@ -53,6 +72,22 @@ const SysUsersPage = () => {
         </>
       ),
     },
+    {
+      title: "Pass",
+      render: (_, record) => (
+        <>
+          <Button
+            type="link"
+            onClick={() => {
+              setCurrentData(record);
+              setChangePassIsOpen(true);
+            }}
+          >
+            Şifrəni dəyiş
+          </Button>
+        </>
+      ),
+    },
   ];
 
   async function onFinish(params) {
@@ -69,15 +104,43 @@ const SysUsersPage = () => {
     setLoading(false);
   }
 
-  async function handleUser(data) {
-    setNewModalLoading(true);
+  async function postUser(data) {
+    setLoading(true);
     const hashedPass = bcrypt.hashSync(
       data.password,
       "$2a$10$CwTycUXWue0Thq9StjUM0u"
     );
     data.password = hashedPass;
     await fetchNewUser(data, user.TOKEN);
-    setNewModalLoading(false);
+    setLoading(false);
+    getData();
+  }
+
+  async function putPassword(params) {
+    setLoading(true);
+    if (params.password === params.repassword) {
+      const hashedPass = bcrypt.hashSync(
+        params.password,
+        "$2a$10$CwTycUXWue0Thq9StjUM0u"
+      );
+      await fetchPutSysUserPassword(
+        currentData.ID,
+        { password: hashedPass },
+
+        user.TOKEN
+      );
+    } else {
+      notification.warning({ message: "Şifrələr eyni deyil" });
+    }
+    setLoading(false);
+    getData();
+  }
+
+  async function putUser(data) {
+    setLoading(true);
+    await fetchPutSysUser(currentData.ID, data, user.TOKEN);
+    setLoading(false);
+    getData();
   }
 
   useEffect(() => {
@@ -135,10 +198,23 @@ const SysUsersPage = () => {
         />
       </div>
       <NewUserModal
-        handleUser={handleUser}
+        handleUser={postUser}
         isOpen={newIsOpen}
         setIsOpen={setNewIsOpen}
-        loading={newModalLoading}
+        loading={loading}
+      />
+      <EditUserModal
+        handleUser={putUser}
+        isOpen={editIsOpen}
+        setIsOpen={setEditIsOpen}
+        loading={loading}
+        current={currentData}
+      />
+      <ChangePasswordModal
+        isOpen={changePassIsOpen}
+        setIsOpen={setChangePassIsOpen}
+        handleData={putPassword}
+        loading={loading}
       />
     </div>
   );

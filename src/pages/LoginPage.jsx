@@ -31,7 +31,8 @@ const LoginPage = () => {
     if (res) {
       setUser(res);
       encryptStorage.setItem("user", res);
-      navigate("/");
+      const path = JSON.parse(localStorage.getItem("navItem"))?.path;
+      navigate(path ? `/${path}` : "/dashboard");
     } else {
       console.log("error", res);
     }

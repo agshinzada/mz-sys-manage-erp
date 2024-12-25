@@ -5,20 +5,34 @@ import { useEffect, useState } from "react";
 import {
   fetchConnections,
   fetchConnectionsByParam,
+  fetchDeleteConnection,
+  fetchPostNewConnection,
+  fetchPutConnection,
 } from "../../services/mobim/connection_service";
 import { useAuth } from "../../context/AuthContext";
+import CopyConnectionModal from "../../components/Modal/mobim/CopyConnectionModal";
+import EditConnectionModal from "../../components/Modal/mobim/EditConnectionModal";
+import Swal from "sweetalert2";
 
 const MobimConnectionPage = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
-  // EDIT BRAND
+  // EDIT CONNECTION
   const [editIsOpen, setEditIsOpen] = useState(false);
   const [currentConnection, setCurrentConnection] = useState(false);
-  // NEW BRAND
-  const [newIsOpen, setNewIsOpen] = useState(false);
+  // COPY CONNECTION
+  const [copyIsOpen, setCopyIsOpen] = useState(false);
+  const [copyConnection, setCopyConnection] = useState(false);
+
   const [loadingFetch, setLoadingFetch] = useState(false);
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      setCopyConnection(...selectedRows);
+    },
+  };
 
   const columns = [
     {
@@ -81,18 +95,36 @@ const MobimConnectionPage = () => {
     },
   ];
 
-  async function handleBrand(params) {
+  async function handleConnection(params) {
     setLoadingFetch(true);
-    // await fetchUpdateBrand(params, currentBrand.ID, user.TOKEN);
-    // setLoadingFetch(false);
+    await fetchPutConnection(params, currentConnection.c_id, user.TOKEN);
+    setLoadingFetch(false);
     getData();
   }
 
-  async function handleNewBrand(params) {
+  async function handleCopy(params) {
     setLoadingFetch(true);
-    // await fetchPostBrand(params, user.TOKEN);
-    // setLoadingFetch(false);
+    await fetchPostNewConnection(params, user.TOKEN);
+    setLoadingFetch(false);
+    setCopyIsOpen(false);
     getData();
+  }
+  async function deleteConnection() {
+    setLoadingFetch(true);
+    Swal.fire({
+      text: "Bağlantı sistemdən silinsin?",
+      showCancelButton: true,
+      confirmButtonText: "Bəli",
+      cancelButtonText: "İmtina",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await fetchDeleteConnection(currentConnection.c_id, user.TOKEN);
+        setEditIsOpen(false);
+        setLoadingFetch(false);
+        getData();
+      }
+      setLoadingFetch(false);
+    });
   }
 
   async function onFinish(params) {
@@ -119,8 +151,12 @@ const MobimConnectionPage = () => {
       <div className="flex justify-between items-center">
         <SearchForm onFinish={onFinish} />
         <div className="flex gap-2 items-center">
-          <Button onClick={() => setNewIsOpen(true)} type="primary">
-            Yeni Bağlantı
+          <Button
+            onClick={() => setCopyIsOpen(true)}
+            type="primary"
+            disabled={!copyConnection}
+          >
+            Kopyala
           </Button>
           <Button onClick={getData} loading={loading}>
             Yenilə
@@ -132,12 +168,29 @@ const MobimConnectionPage = () => {
           columns={columns}
           dataSource={dataSource}
           pagination={true}
-          rowKey={(record) => record.rec_id}
+          rowKey={(record) => record.c_id}
           loading={loading}
-
-          // scroll={{ x: "max-content" }}
+          rowSelection={{
+            type: "radio",
+            ...rowSelection,
+          }}
         />
       </div>
+      <CopyConnectionModal
+        current={copyConnection}
+        isOpen={copyIsOpen}
+        setIsOpen={setCopyIsOpen}
+        handleData={handleCopy}
+        loading={loadingFetch}
+      />
+      <EditConnectionModal
+        current={currentConnection}
+        isOpen={editIsOpen}
+        setIsOpen={setEditIsOpen}
+        handleData={handleConnection}
+        handleDelete={deleteConnection}
+        loading={loadingFetch}
+      />
     </div>
   );
 };

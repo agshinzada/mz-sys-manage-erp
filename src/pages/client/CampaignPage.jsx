@@ -130,7 +130,7 @@ const CampaignPage = () => {
     <div>
       <PageTitle title={"kampaniyalar"} />
 
-      <div className="flex justify-between mb-5 items-center">
+      <div className="flex justify-between items-center">
         <SearchForm onFinish={onFinish} />
 
         <div className="flex gap-8 items-center">

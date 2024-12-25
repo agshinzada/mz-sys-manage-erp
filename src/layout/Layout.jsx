@@ -26,7 +26,7 @@ const MainLayout = () => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
-        <div className="demo-logo-vertical flex items-center justify-center gap-2 px-3 py-5">
+        <div className="demo-logo-vertical flex items-center justify-center flex-wrap gap-2 px-3 py-5">
           <img src={logo} alt="logo" className="w-8" />
           <h1 className="text-white text-[17px] font-bold">SYS manage</h1>
         </div>

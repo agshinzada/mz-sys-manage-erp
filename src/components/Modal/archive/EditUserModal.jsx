@@ -1,18 +1,34 @@
 import { Button, Form, Input, Modal, Select } from "antd";
+import { useEffect } from "react";
 
-const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
+const EditUserModal = ({ isOpen, setIsOpen, loading, handleData, current }) => {
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (current) {
+      form.setFieldsValue({
+        username: current?.USERNAME,
+        name: current?.NAME,
+        surname: current?.SURNAME,
+        role: current?.ROLE,
+        status: current?.STATUS,
+      });
+    }
+  }, [current, form]);
+
   return (
     <Modal
-      title={<p>Yeni status</p>}
+      title={<p>Yeni İstifadəçi</p>}
       footer={""}
-      loading={loading}
       open={isOpen}
       onCancel={() => setIsOpen(false)}
+      loading={loading}
       width={"fit-content"}
       style={{ minWidth: "600px" }}
     >
       <Form
         layout="vertical"
+        form={form}
         style={{
           maxWidth: 600,
           marginTop: "1.5rem",
@@ -23,56 +39,86 @@ const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
         onFinish={handleData}
         autoComplete="off"
       >
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <Form.Item
-            label="STATUS_ID"
-            name="statusId"
+            label="Name"
+            name="name"
             className="w-full"
             rules={[
               {
                 required: true,
-                message: "Required!",
+                message: "Required",
               },
             ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="NAME"
-            name="name"
+            label="Surname"
+            name="surname"
             className="w-full"
             rules={[
               {
                 required: true,
-                message: "Required!",
+                message: "Required",
               },
             ]}
           >
             <Input />
           </Form.Item>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <Form.Item
-            label="COLOR"
-            name="color"
+            label="Username"
+            name="username"
             className="w-full"
             rules={[
               {
                 required: true,
-                message: "Required!",
+                message: "Required",
               },
             ]}
           >
             <Input />
           </Form.Item>
+        </div>
+        <div className="flex gap-4">
           <Form.Item
-            label="STATUS"
+            label="Role"
+            name="role"
+            className="w-full"
+            rules={[
+              {
+                required: true,
+                message: "Required",
+              },
+            ]}
+          >
+            <Select
+              options={[
+                {
+                  value: "ADMIN",
+                  label: "ADMIN",
+                },
+                {
+                  value: "USER",
+                  label: "USER",
+                },
+                {
+                  value: "MODERATOR",
+                  label: "MODERATOR",
+                },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Status"
             name="status"
             className="w-full"
             rules={[
               {
                 required: true,
-                message: "Required!",
+                message: "Required",
               },
             ]}
           >
@@ -84,13 +130,12 @@ const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
                 },
                 {
                   value: 1,
-                  label: "Deaktiv",
+                  label: "Passiv",
                 },
               ]}
             />
           </Form.Item>
         </div>
-
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
             Submit
@@ -101,4 +146,4 @@ const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
   );
 };
 
-export default NewStatusModal;
+export default EditUserModal;

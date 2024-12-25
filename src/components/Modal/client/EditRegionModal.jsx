@@ -14,7 +14,7 @@ const EditRegionModal = ({
     if (current) {
       form.setFieldsValue({
         name: current?.NAME,
-        rootId: current?.ROOT_ID,
+        sysId: current?.SYS_ID,
         codeId: current?.CODE_ID,
         status: current?.STATUS,
       });
@@ -57,8 +57,8 @@ const EditRegionModal = ({
         </Form.Item>
         <div className="flex gap-4">
           <Form.Item
-            label="Root ID"
-            name="rootId"
+            label="SYS ID"
+            name="sysId"
             rules={[
               {
                 required: true,

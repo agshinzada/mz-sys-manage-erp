@@ -4,15 +4,19 @@ import { Button, Table, Tag } from "antd";
 import { useAuth } from "../../context/AuthContext";
 import SearchForm from "../../utils/SearchForm";
 import {
+  fetchNewOrderkind,
   fetchNewStatus,
+  fetchPutSysOrderkind,
   fetchPutSysStatus,
+  fetchSysOrderkindCodes,
+  fetchSysOrderkindCodesByParam,
   fetchSysStatusCodes,
   fetchSysStatusCodesByParam,
 } from "../../services/sys_service";
 import NewStatusModal from "../../components/Modal/NewStatusModal";
 import EditStatusModal from "../../components/Modal/EditStatusModal";
 
-const StatusCodesPage = () => {
+const OrderkindCodesPage = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newIsOpen, setNewIsOpen] = useState(false);
@@ -58,27 +62,27 @@ const StatusCodesPage = () => {
   ];
   async function getData() {
     setLoading(true);
-    const data = await fetchSysStatusCodes(user.TOKEN);
+    const data = await fetchSysOrderkindCodes(user.TOKEN);
     setDataSource(data);
     setLoading(false);
   }
 
   async function onSearch(params) {
     setLoading(true);
-    const data = await fetchSysStatusCodesByParam(params.value, user.TOKEN);
+    const data = await fetchSysOrderkindCodesByParam(params.value, user.TOKEN);
     setDataSource(data);
     setLoading(false);
   }
 
   async function postStatus(params) {
     setLoading(true);
-    await fetchNewStatus(params, user.TOKEN);
+    await fetchNewOrderkind(params, user.TOKEN);
     setLoading(false);
     getData();
   }
   async function putStatus(params) {
     setLoading(true);
-    await fetchPutSysStatus(currentStatus.ID, params, user.TOKEN);
+    await fetchPutSysOrderkind(currentStatus.ID, params, user.TOKEN);
     setLoading(false);
     getData();
   }
@@ -93,7 +97,6 @@ const StatusCodesPage = () => {
       <div className="flex justify-between items-center">
         <SearchForm onFinish={onSearch} />
         <div className="flex gap-2 items-center">
-          {" "}
           <Button onClick={() => setNewIsOpen(true)} type="primary">
             Yeni Status
           </Button>
@@ -127,4 +130,4 @@ const StatusCodesPage = () => {
   );
 };
 
-export default StatusCodesPage;
+export default OrderkindCodesPage;

@@ -16,6 +16,22 @@ export async function fetchOrders(token) {
   }
 }
 
+export async function fetchDelayedOrders(token) {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/orders/delayed`,
+      {
+        params: {
+          token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    notification.error({ message: error.response.data });
+  }
+}
+
 export async function fetchOrdersByParam(data, token) {
   try {
     const response = await axios.post(

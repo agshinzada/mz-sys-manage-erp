@@ -1,21 +1,32 @@
 import { useEffect, useState } from "react";
 import PageTitle from "../../utils/PageTitle";
-import { Button, Form, Input, Table, Tag } from "antd";
+import { Button, Form, Input, notification, Table, Tag } from "antd";
 import NewUserModal from "../../components/Modal/archive/NewUserModal";
 import {
   fetchArchiveUsers,
   fetchArchiveUsersByParam,
-  fetchNewUser,
+  fetchPostArchiveUser,
+  fetchUpdateArchiveUser,
+  fetchUpdateArchiveUserPassword,
 } from "../../services/archive/user_service";
 import bcrypt from "bcryptjs";
 import { useAuth } from "../../context/AuthContext";
+import ChangePasswordModal from "../../components/Modal/ChangePasswordModal";
+import EditUserModal from "../../components/Modal/archive/EditUserModal";
 
 const ArchiveUsersPage = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [newModalLoading, setNewModalLoading] = useState(false);
-  const [newIsOpen, setNewIsOpen] = useState(false);
   const { user } = useAuth();
+
+  // EDIT USER
+  const [editIsOpen, setEditIsOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(false);
+  // NEW USER
+  const [newIsOpen, setNewIsOpen] = useState(false);
+  const [loadingFetch, setLoadingFetch] = useState(false);
+  // CHANGE PASS
+  const [changePassIsOpen, setChangePassIsOpen] = useState(false);
 
   const columns = [
     {
@@ -24,15 +35,33 @@ const ArchiveUsersPage = () => {
       key: "ID",
     },
     {
-      title: "Ref",
-      dataIndex: "REF",
-      key: "REF",
+      title: "Name",
+      dataIndex: "NAME",
+      key: "NAME",
+    },
+    {
+      title: "Surname",
+      dataIndex: "SURNAME",
+      key: "SURNAME",
     },
 
     {
       title: "Username",
       dataIndex: "USERNAME",
       key: "USERNAME",
+      render: (_, record) => (
+        <>
+          <Button
+            type="link"
+            onClick={() => {
+              setCurrentUser(record);
+              setEditIsOpen(true);
+            }}
+          >
+            {record.USERNAME}
+          </Button>
+        </>
+      ),
     },
     {
       title: "Role",
@@ -52,6 +81,22 @@ const ArchiveUsersPage = () => {
         </>
       ),
     },
+    {
+      title: "Pass",
+      render: (_, record) => (
+        <>
+          <Button
+            type="link"
+            onClick={() => {
+              setCurrentUser(record);
+              setChangePassIsOpen(true);
+            }}
+          >
+            Şifrəni dəyiş
+          </Button>
+        </>
+      ),
+    },
   ];
 
   async function onFinish(params) {
@@ -68,15 +113,42 @@ const ArchiveUsersPage = () => {
     setLoading(false);
   }
 
-  async function handleUser(data) {
-    setNewModalLoading(true);
+  async function handlePassword(params) {
+    setLoadingFetch(true);
+    if (params.password === params.repassword) {
+      const hashedPass = bcrypt.hashSync(
+        params.password,
+        "$2a$10$CwTycUXWue0Thq9StjUM0u"
+      );
+      await fetchUpdateArchiveUserPassword(
+        { password: hashedPass },
+        currentUser.ID,
+        user.TOKEN
+      );
+    } else {
+      notification.warning({ message: "Şifrələr eyni deyil" });
+    }
+    setLoadingFetch(false);
+    getData();
+  }
+
+  async function handleUser(params) {
+    setLoadingFetch(true);
+    await fetchUpdateArchiveUser(params, currentUser.ID, user.TOKEN);
+    setLoadingFetch(false);
+    getData();
+  }
+
+  async function handleNewUser(params) {
+    setLoadingFetch(true);
     const hashedPass = bcrypt.hashSync(
-      data.password,
+      params.password,
       "$2a$10$CwTycUXWue0Thq9StjUM0u"
     );
-    data.password = hashedPass;
-    await fetchNewUser(data, user.TOKEN);
-    setNewModalLoading(false);
+    params.password = hashedPass;
+    await fetchPostArchiveUser(params, user.TOKEN);
+    setLoadingFetch(false);
+    getData();
   }
 
   useEffect(() => {
@@ -88,7 +160,6 @@ const ArchiveUsersPage = () => {
       <PageTitle title={"istifadəçilər"} />
       <div className="flex justify-between mb-5 items-center">
         <Form
-          name="basic"
           layout="vertical"
           initialValues={{
             remember: true,
@@ -134,10 +205,23 @@ const ArchiveUsersPage = () => {
         />
       </div>
       <NewUserModal
-        handleUser={handleUser}
+        handleData={handleNewUser}
         isOpen={newIsOpen}
         setIsOpen={setNewIsOpen}
-        loading={newModalLoading}
+        loading={loadingFetch}
+      />
+      <EditUserModal
+        handleData={handleUser}
+        isOpen={editIsOpen}
+        setIsOpen={setEditIsOpen}
+        loading={loadingFetch}
+        current={currentUser}
+      />
+      <ChangePasswordModal
+        isOpen={changePassIsOpen}
+        setIsOpen={setChangePassIsOpen}
+        handleData={handlePassword}
+        loading={loadingFetch}
       />
     </div>
   );

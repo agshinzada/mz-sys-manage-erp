@@ -1,9 +1,22 @@
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, Form, Input, InputNumber, Modal, Select } from "antd";
+import { useEffect } from "react";
 
-const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
+const NewUserModal = ({ handleUser, loading, isOpen, setIsOpen, current }) => {
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (current) {
+      form.setFieldsValue({
+        username: current?.USERNAME,
+        logoRef: current?.REF,
+        role: current?.ROLE,
+        status: current?.STATUS,
+      });
+    }
+  }, [current, form]);
   return (
     <Modal
-      title={<p>Yeni status</p>}
+      title={<p>Düzəliş</p>}
       footer={""}
       loading={loading}
       open={isOpen}
@@ -12,6 +25,7 @@ const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
       style={{ minWidth: "600px" }}
     >
       <Form
+        form={form}
         layout="vertical"
         style={{
           maxWidth: 600,
@@ -20,53 +34,60 @@ const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
         initialValues={{
           remember: false,
         }}
-        onFinish={handleData}
+        onFinish={handleUser}
         autoComplete="off"
       >
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: "Please input your username!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
         <div className="flex gap-2">
           <Form.Item
-            label="STATUS_ID"
-            name="statusId"
-            className="w-full"
+            label="LOGO ref"
+            name="logoRef"
             rules={[
               {
                 required: true,
-                message: "Required!",
+                message: "Please input your ref!",
               },
             ]}
           >
-            <Input />
+            <InputNumber />
           </Form.Item>
           <Form.Item
-            label="NAME"
-            name="name"
-            className="w-full"
+            label="Role"
+            name="role"
             rules={[
               {
                 required: true,
-                message: "Required!",
+                message: "Please input your role!",
               },
             ]}
-          >
-            <Input />
-          </Form.Item>
-        </div>
-        <div className="flex gap-2">
-          <Form.Item
-            label="COLOR"
-            name="color"
             className="w-full"
-            rules={[
-              {
-                required: true,
-                message: "Required!",
-              },
-            ]}
           >
-            <Input />
+            <Select
+              options={[
+                {
+                  value: "ADMIN",
+                  label: "Admin",
+                },
+                {
+                  value: "USER",
+                  label: "User",
+                },
+              ]}
+            />
           </Form.Item>
           <Form.Item
-            label="STATUS"
+            label="Status"
             name="status"
             className="w-full"
             rules={[
@@ -101,4 +122,4 @@ const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
   );
 };
 
-export default NewStatusModal;
+export default NewUserModal;

@@ -1,25 +1,40 @@
-import { Button, Table, Tag } from "antd";
+import { Button, Radio, Table, Tag } from "antd";
 import PageTitle from "../../utils/PageTitle";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import SearchForm from "../../utils/SearchForm";
 import {
+  fetchDeleteDevice,
   fetchDevices,
   fetchDevicesByParam,
+  fetchPostNewDevice,
+  fetchPutDevice,
 } from "../../services/mobim/device_service";
-import { regions } from "../../utils/variables";
+import EditDeviceModal from "../../components/Modal/mobim/EditDeviceModal";
+import { useSite } from "../../context/SiteContext";
+import CopyDeviceModal from "../../components/Modal/mobim/CopyDeviceModal";
+import Swal from "sweetalert2";
 
 const MobimDevicePage = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
 
-  // EDIT BRAND
+  const { user } = useAuth();
+  const { regions } = useSite();
+
+  // EDIT DEVICE
   const [editIsOpen, setEditIsOpen] = useState(false);
   const [currentDevice, setCurrentDevice] = useState(false);
-  // NEW BRAND
-  const [newIsOpen, setNewIsOpen] = useState(false);
+  const [copyDevice, setCopyDevice] = useState(false);
   const [loadingFetch, setLoadingFetch] = useState(false);
+  // COPY DEVICE
+  const [copyIsOpen, setCopyIsOpen] = useState(false);
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      setCopyDevice(...selectedRows);
+    },
+  };
 
   const columns = [
     {
@@ -47,7 +62,7 @@ const MobimDevicePage = () => {
       render: (_, { RegionalCode }) => (
         <>
           <Tag color="blue" key={RegionalCode}>
-            {regions.find((br) => br.id === parseInt(RegionalCode))?.name}
+            {regions.find((rg) => rg.SYS_ID === parseInt(RegionalCode))?.NAME}
           </Tag>
         </>
       ),
@@ -64,18 +79,37 @@ const MobimDevicePage = () => {
     },
   ];
 
-  async function handleBrand(params) {
+  async function handleDevice(params) {
     setLoadingFetch(true);
-    // await fetchUpdateBrand(params, currentBrand.ID, user.TOKEN);
-    // setLoadingFetch(false);
+    await fetchPutDevice(params, currentDevice.rec_id, user.TOKEN);
+    setLoadingFetch(false);
     getData();
   }
 
-  async function handleNewBrand(params) {
+  async function handleCopy(params) {
     setLoadingFetch(true);
-    // await fetchPostBrand(params, user.TOKEN);
-    // setLoadingFetch(false);
+    await fetchPostNewDevice(params, user.TOKEN);
+    setLoadingFetch(false);
+    setCopyIsOpen(false);
     getData();
+  }
+
+  async function deleteDevice() {
+    setLoadingFetch(true);
+    Swal.fire({
+      text: "Cihaz sistemdən silinsin?",
+      showCancelButton: true,
+      confirmButtonText: "Bəli",
+      cancelButtonText: "İmtina",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await fetchDeleteDevice(currentDevice.rec_id, user.TOKEN);
+        setEditIsOpen(false);
+        setLoadingFetch(false);
+        getData();
+      }
+      setLoadingFetch(false);
+    });
   }
 
   async function onFinish(params) {
@@ -102,8 +136,12 @@ const MobimDevicePage = () => {
       <div className="flex justify-between items-center">
         <SearchForm onFinish={onFinish} />
         <div className="flex gap-2 items-center">
-          <Button onClick={() => setNewIsOpen(true)} type="primary">
-            Yeni Cihaz
+          <Button
+            onClick={() => setCopyIsOpen(true)}
+            type="primary"
+            disabled={!copyDevice}
+          >
+            Kopyala
           </Button>
           <Button onClick={getData} loading={loading}>
             Yenilə
@@ -117,9 +155,28 @@ const MobimDevicePage = () => {
           pagination={true}
           rowKey={(record) => record.rec_id}
           loading={loading}
+          rowSelection={{
+            type: "radio",
+            ...rowSelection,
+          }}
           // scroll={{ x: "max-content" }}
         />
       </div>
+      <EditDeviceModal
+        isOpen={editIsOpen}
+        setIsOpen={setEditIsOpen}
+        loading={loadingFetch}
+        handleData={handleDevice}
+        current={currentDevice}
+        handleDelete={deleteDevice}
+      />
+      <CopyDeviceModal
+        isOpen={copyIsOpen}
+        setIsOpen={setCopyIsOpen}
+        loading={loadingFetch}
+        handleData={handleCopy}
+        current={copyDevice}
+      />
     </div>
   );
 };

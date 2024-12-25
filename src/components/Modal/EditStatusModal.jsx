@@ -1,9 +1,30 @@
 import { Button, Form, Input, Modal, Select } from "antd";
+import { useEffect } from "react";
 
-const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
+const NewStatusModal = ({
+  handleData,
+  loading,
+  current,
+  isOpen,
+  setIsOpen,
+}) => {
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (current) {
+      form.setFieldsValue({
+        statusId: current?.STATUS_ID,
+        name: current?.NAME,
+        type: current?.TYPE,
+        color: current?.COLOR,
+        status: current?.STATUS,
+      });
+    }
+  }, [current, form]);
+
   return (
     <Modal
-      title={<p>Yeni status</p>}
+      title={<p>Düzəliş</p>}
       footer={""}
       loading={loading}
       open={isOpen}
@@ -12,6 +33,7 @@ const NewStatusModal = ({ handleData, loading, isOpen, setIsOpen }) => {
       style={{ minWidth: "600px" }}
     >
       <Form
+        form={form}
         layout="vertical"
         style={{
           maxWidth: 600,

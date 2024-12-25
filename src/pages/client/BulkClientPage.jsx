@@ -11,8 +11,8 @@ import {
   fetchRoutes,
   fetchUploadBulkClients,
 } from "../../services/client/client_service";
-import { fetchBrands } from "../../services/client/brand_service";
 import writeXlsxFile from "write-excel-file";
+import { fetchSysBrands } from "../../services/sys_service";
 
 const BulkClientPage = () => {
   const { user } = useAuth();
@@ -71,13 +71,15 @@ const BulkClientPage = () => {
   ];
 
   async function createCodes(data) {
+    const brandData = JSON.parse(data.brand.value);
+
     setProcessingMessage("Kodlar yaradılır...");
     const uniqueArray = [...new Set(data.stickers.split("\n"))];
     const nonBlankLines = uniqueArray.filter((line) => line.trim() !== "");
     const codes = await fetchCreateClientCodesBulk(
       {
-        brandCode: data.brand.value,
-        brandId: data.brand.key,
+        brandCode: brandData.brandCode,
+        brandId: brandData.brandId,
         routeCode: data.route.key,
         stickers: nonBlankLines,
       },
@@ -113,7 +115,7 @@ const BulkClientPage = () => {
   }
 
   async function getBrands() {
-    const data = await fetchBrands(user.TOKEN);
+    const data = await fetchSysBrands(user.TOKEN);
     setBrands(data);
   }
 
@@ -217,7 +219,13 @@ const BulkClientPage = () => {
                   optionFilterProp="children"
                 >
                   {brands.map((option) => (
-                    <Option key={option.ID} value={option.TYPE + option.CODE}>
+                    <Option
+                      key={option.ID}
+                      value={JSON.stringify({
+                        brandCode: option.BRAND_TYPE + option.BRAND_CODE,
+                        brandId: option.SYS_ID,
+                      })}
+                    >
                       {option.NAME}
                     </Option>
                   ))}

@@ -1,17 +1,41 @@
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, Form, Input, Modal } from "antd";
+import { useEffect } from "react";
 
-const NewUserModal = ({ isOpen, setIsOpen, loading, handleData }) => {
+const CopyConnectionModal = ({
+  isOpen,
+  setIsOpen,
+  loading,
+  handleData,
+  current,
+}) => {
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (current) {
+      form.setFieldsValue({
+        name: current.c_conn_name,
+        server: current.c_server,
+        database: current.c_database,
+        username: current.c_username,
+        password: current.c_password,
+        firmNo: current.c_firmno,
+        period: current.c_period,
+        brand: current.c_brend,
+      });
+    }
+  }, [current, form]);
+
   return (
     <Modal
-      title={<p>Yeni İstifadəçi</p>}
+      title={<p>Cihaz kopyalama</p>}
       footer={""}
       open={isOpen}
       onCancel={() => setIsOpen(false)}
-      loading={loading}
       width={"fit-content"}
       style={{ minWidth: "600px" }}
     >
       <Form
+        form={form}
         layout="vertical"
         style={{
           maxWidth: 600,
@@ -23,11 +47,34 @@ const NewUserModal = ({ isOpen, setIsOpen, loading, handleData }) => {
         onFinish={handleData}
         autoComplete="off"
       >
-        <div className="flex gap-4">
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Required",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Server"
+          name="server"
+          rules={[
+            {
+              required: true,
+              message: "Required",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <div className="flex gap-2">
           <Form.Item
-            label="Name"
-            name="name"
-            className="w-full"
+            label="Database"
+            name="database"
             rules={[
               {
                 required: true,
@@ -37,25 +84,9 @@ const NewUserModal = ({ isOpen, setIsOpen, loading, handleData }) => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Surname"
-            name="surname"
-            className="w-full"
-            rules={[
-              {
-                required: true,
-                message: "Required",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-        </div>
-        <div className="flex gap-4">
           <Form.Item
             label="Username"
             name="username"
-            className="w-full"
             rules={[
               {
                 required: true,
@@ -68,7 +99,6 @@ const NewUserModal = ({ isOpen, setIsOpen, loading, handleData }) => {
           <Form.Item
             label="Password"
             name="password"
-            className="w-full"
             rules={[
               {
                 required: true,
@@ -76,14 +106,13 @@ const NewUserModal = ({ isOpen, setIsOpen, loading, handleData }) => {
               },
             ]}
           >
-            <Input.Password />
+            <Input />
           </Form.Item>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <Form.Item
-            label="Role"
-            name="role"
-            className="w-full"
+            label="FirmNo"
+            name="firmNo"
             rules={[
               {
                 required: true,
@@ -91,27 +120,11 @@ const NewUserModal = ({ isOpen, setIsOpen, loading, handleData }) => {
               },
             ]}
           >
-            <Select
-              options={[
-                {
-                  value: "ADMIN",
-                  label: "ADMIN",
-                },
-                {
-                  value: "USER",
-                  label: "USER",
-                },
-                {
-                  value: "MODERATOR",
-                  label: "MODERATOR",
-                },
-              ]}
-            />
+            <Input />
           </Form.Item>
           <Form.Item
-            label="Status"
-            name="status"
-            className="w-full"
+            label="Period"
+            name="period"
             rules={[
               {
                 required: true,
@@ -119,20 +132,22 @@ const NewUserModal = ({ isOpen, setIsOpen, loading, handleData }) => {
               },
             ]}
           >
-            <Select
-              options={[
-                {
-                  value: 0,
-                  label: "Aktiv",
-                },
-                {
-                  value: 1,
-                  label: "Passiv",
-                },
-              ]}
-            />
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Brand"
+            name="brand"
+            rules={[
+              {
+                required: true,
+                message: "Required",
+              },
+            ]}
+          >
+            <Input />
           </Form.Item>
         </div>
+
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
             Submit
@@ -143,4 +158,4 @@ const NewUserModal = ({ isOpen, setIsOpen, loading, handleData }) => {
   );
 };
 
-export default NewUserModal;
+export default CopyConnectionModal;

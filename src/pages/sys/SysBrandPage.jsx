@@ -1,16 +1,16 @@
 import { Button, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
-import {
-  fetchBrands,
-  fetchBrandsByParam,
-  fetchPostBrand,
-  fetchUpdateBrand,
-} from "../../services/client/brand_service";
 import { useAuth } from "../../context/AuthContext";
 import EditBrandModal from "../../components/Modal/client/EditBrandModal";
 import NewBrandModal from "../../components/Modal/client/NewBrandModal";
 import PageTitle from "../../utils/PageTitle";
 import SearchForm from "../../utils/SearchForm";
+import {
+  fetchPostSysBrand,
+  fetchSysBrands,
+  fetchSysBrandsByParam,
+  fetchUpdateSysBrand,
+} from "../../services/sys_service";
 
 const SysBrandPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -50,18 +50,18 @@ const SysBrandPage = () => {
     },
     {
       title: "Kateqoriya",
-      dataIndex: "TYPE",
-      key: "TYPE",
+      dataIndex: "BRAND_TYPE",
+      key: "BRAND_TYPE",
     },
     {
       title: "Kod",
-      dataIndex: "CODE",
-      key: "CODE",
+      dataIndex: "BRAND_CODE",
+      key: "BRAND_CODE",
     },
     {
-      title: "NR",
-      key: "NR",
-      dataIndex: "NR",
+      title: "SYS_ID",
+      key: "SYS_ID",
+      dataIndex: "SYS_ID",
     },
     {
       title: "Status",
@@ -79,28 +79,28 @@ const SysBrandPage = () => {
 
   async function handleBrand(params) {
     setLoadingFetch(true);
-    await fetchUpdateBrand(params, currentBrand.ID, user.TOKEN);
+    await fetchUpdateSysBrand(params, currentBrand.ID, user.TOKEN);
     setLoadingFetch(false);
     getData();
   }
 
   async function handleNewBrand(params) {
     setLoadingFetch(true);
-    await fetchPostBrand(params, user.TOKEN);
+    await fetchPostSysBrand(params, user.TOKEN);
     setLoadingFetch(false);
     getData();
   }
 
   async function onFinish(params) {
     setLoading(true);
-    const data = await fetchBrandsByParam(params.value, user.TOKEN);
+    const data = await fetchSysBrandsByParam(params.value, user.TOKEN);
     setDataSource(data);
     setLoading(false);
   }
 
   async function getData() {
     setLoading(true);
-    const data = await fetchBrands(user.TOKEN);
+    const data = await fetchSysBrands(user.TOKEN);
     setDataSource(data);
     setLoading(false);
   }

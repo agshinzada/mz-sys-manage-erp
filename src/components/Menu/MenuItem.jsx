@@ -1,20 +1,13 @@
 import { Menu } from "antd";
 import { useNavigate } from "react-router-dom";
-import {
-  SnippetsOutlined,
-  DollarOutlined,
-  PlusSquareOutlined,
-  BarcodeOutlined,
-  SettingOutlined,
-  DatabaseOutlined,
-} from "@ant-design/icons";
+
 import { TbReportSearch } from "react-icons/tb";
 import { IoDocumentLockOutline } from "react-icons/io5";
 import { IoIosCash, IoMdArchive } from "react-icons/io";
-import { FaDatabase } from "react-icons/fa";
 import { GoDatabase } from "react-icons/go";
 import { ImProfile } from "react-icons/im";
-import { MdOutlineSettings } from "react-icons/md";
+import { MdDashboard, MdOutlineSettings } from "react-icons/md";
+import { useSite } from "../../context/SiteContext";
 
 function getItem(label, key, icon, children) {
   return {
@@ -26,7 +19,7 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-  //   getItem("Dashboard", "2", <DesktopOutlined />),
+  getItem("Dashboard", 31, <MdDashboard size={"1.3rem"} />),
   getItem("Sifarişlər", 1, <IoDocumentLockOutline size={"1.3rem"} />, [
     getItem("Siyahı", 2),
     getItem("LOGO", 22),
@@ -38,11 +31,8 @@ const items = [
   getItem("Mobim", 23, <GoDatabase size={"1.2rem"} />, [
     getItem("Cihazlar", 24),
     getItem("Connections", 25),
-    getItem("Servislər", 26),
   ]),
   getItem("Yeni müştəri", 5, <ImProfile size={"1.2rem"} />, [
-    getItem("Regionlar", 6),
-    getItem("Brendlər", 7),
     getItem("Müştəri kateqoriyası", 8),
     getItem("Endirimlər", 9),
     getItem("Kampaniyalar", 10),
@@ -50,11 +40,11 @@ const items = [
     getItem("Vizit günləri", 12),
     getItem("İstifadəçilər", 13),
     getItem("Toplu müştəri", 14),
-    getItem("Məhsul düzəlişi", 15),
     getItem("Loglar", 16),
   ]),
-  getItem("Archive", 18, <IoMdArchive size={"1.2rem"} />, [
+  getItem("Arxiv", 18, <IoMdArchive size={"1.2rem"} />, [
     getItem("İstifadəçilər", 19),
+    getItem("Log", 34),
   ]),
 
   getItem("Hesabatlar", 28, <TbReportSearch size={"1.2rem"} />, [
@@ -62,104 +52,120 @@ const items = [
   ]),
   getItem("Administration", 20, <MdOutlineSettings size={"1.2rem"} />, [
     getItem("İstifadəçilər", 21),
+    getItem("Regionlar", 32),
+    getItem("Brendlər", 33),
     getItem("Status kodları", 30),
-    getItem("APP versiyalar", 27),
+    getItem("Orderkind kodları", 35),
   ]),
   //   getItem("Files", "9", <FileOutlined />),
 ];
 
 const MenuItem = () => {
   const navigate = useNavigate();
+  const { menuId, setMenuId } = useSite();
 
   function handleMenu(event) {
     switch (parseInt(event.key)) {
       case 2:
         navigate("orders/list");
-        selectedToLocal(2);
+        selectedToLocal(2, "orders/list");
         break;
       case 4:
         navigate("payments/list");
-        selectedToLocal(4);
+        selectedToLocal(4, "payments/list");
         break;
       case 17:
         navigate("payments/remain");
-        selectedToLocal(17);
+        selectedToLocal(17, "payments/remain");
         break;
       case 6:
         navigate("client/regions");
-        selectedToLocal(6);
+        selectedToLocal(6, "client/regions");
         break;
       case 7:
         navigate("client/brands");
-        selectedToLocal(7);
+        selectedToLocal(7, "client/brands");
         break;
       case 8:
         navigate("client/category");
-        selectedToLocal(8);
+        selectedToLocal(8, "client/category");
         break;
       case 9:
         navigate("client/discounts");
-        selectedToLocal(9);
+        selectedToLocal(9, "client/discounts");
         break;
       case 10:
         navigate("client/campaigns");
-        selectedToLocal(10);
+        selectedToLocal(10, "client/campaigns");
         break;
       case 11:
         navigate("client/delivery");
-        selectedToLocal(11);
+        selectedToLocal(11, "client/delivery");
         break;
       case 12:
         navigate("client/visits");
-        selectedToLocal(12);
+        selectedToLocal(12, "client/visits");
         break;
       case 13:
         navigate("client/users");
-        selectedToLocal(13);
+        selectedToLocal(13, "client/users");
         break;
       case 14:
         navigate("client/bulk");
-        selectedToLocal(14);
+        selectedToLocal(14, "client/bulk");
         break;
       case 16:
         navigate("client/logs");
-        selectedToLocal(16);
+        selectedToLocal(16, "client/logs");
         break;
       case 21:
         navigate("setting/users");
-        selectedToLocal(21);
-        break;
-      case 27:
-        navigate("setting/app/versions");
-        selectedToLocal(27);
+        selectedToLocal(21, "setting/users");
         break;
       case 30:
         navigate("setting/status");
-        selectedToLocal(30);
+        selectedToLocal(30, "setting/status");
+        break;
+      case 35:
+        navigate("setting/status/orderkind");
+        selectedToLocal(35, "setting/status/orderkind");
+        break;
+      case 32:
+        navigate("setting/regions");
+        selectedToLocal(32, "setting/regions");
+        break;
+      case 33:
+        navigate("setting/brands");
+        selectedToLocal(33, "setting/brands");
         break;
       case 22:
         navigate("logo/orders");
-        selectedToLocal(22);
+        selectedToLocal(22, "logo/orders");
         break;
       case 19:
         navigate("archive/users");
-        selectedToLocal(19);
+        selectedToLocal(19, "archive/users");
+        break;
+      case 34:
+        navigate("archive/logs");
+        selectedToLocal(34, "archive/logs");
         break;
       case 24:
         navigate("mobim/devices");
-        selectedToLocal(24);
+        selectedToLocal(24, "mobim/devices");
         break;
       case 25:
         navigate("mobim/connections");
-        selectedToLocal(25);
+        selectedToLocal(25, "mobim/connections");
         break;
-      case 26:
-        navigate("mobim/services");
-        selectedToLocal(26);
-        break;
+
       case 29:
         navigate("report/retrification");
-        selectedToLocal(29);
+        selectedToLocal(29, "report/retrification");
+        break;
+      case 31:
+        navigate("dashboard");
+        selectedToLocal(31, "dashboard");
         break;
 
       default:
@@ -167,13 +173,15 @@ const MenuItem = () => {
     }
   }
 
-  function selectedToLocal(id) {
-    localStorage.setItem("navId", id);
+  function selectedToLocal(id, path) {
+    localStorage.setItem("navItem", JSON.stringify({ id, path }));
+    setMenuId(id);
   }
   return (
     <Menu
       theme="dark"
-      defaultSelectedKeys={[localStorage.getItem("navId") || 2]}
+      defaultSelectedKeys={[menuId.toString()]}
+      selectedKeys={[menuId.toString()]}
       mode="inline"
       onClick={handleMenu}
       items={items}

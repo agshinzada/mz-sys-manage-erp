@@ -109,7 +109,7 @@ const ClientCategoryPage = () => {
     <div>
       <PageTitle title={"müştəri kateqoriyaları"} />
 
-      <div className="flex justify-between mb-5 items-center">
+      <div className="flex justify-between items-center">
         <SearchForm onFinish={onFinish} />
 
         <div className="flex gap-2 items-center">

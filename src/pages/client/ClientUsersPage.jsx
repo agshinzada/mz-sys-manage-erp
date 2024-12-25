@@ -11,7 +11,7 @@ import { useAuth } from "../../context/AuthContext";
 import EditUserModal from "../../components/Modal/client/EditUserModal";
 import NewUserModal from "../../components/Modal/client/NewUserModal";
 import bcrypt from "bcryptjs";
-import ChangePasswordModal from "../../components/Modal/client/ChangePasswordModal";
+import ChangePasswordModal from "../../components/Modal/ChangePasswordModal";
 import PageTitle from "../../utils/PageTitle";
 import SearchForm from "../../utils/SearchForm";
 
@@ -154,10 +154,8 @@ const ClientUsersPage = () => {
   return (
     <div>
       <PageTitle title={"istifadəçilər"} />
-
-      <div className="flex justify-between mb-5 items-center">
+      <div className="flex justify-between items-center">
         <SearchForm onFinish={onFinish} />
-
         <div className="flex gap-2 items-center">
           <Button onClick={() => setNewIsOpen(true)} type="primary">
             Yeni İstifadəçi

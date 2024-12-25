@@ -1,28 +1,27 @@
 import { Button, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
-import {
-  fetchBrands,
-  fetchBrandsByParam,
-  fetchPostBrand,
-  fetchUpdateBrand,
-} from "../../services/client/brand_service";
 import { useAuth } from "../../context/AuthContext";
-import EditBrandModal from "../../components/Modal/client/EditBrandModal";
-import NewBrandModal from "../../components/Modal/client/NewBrandModal";
+import NewRegionModal from "../../components/Modal/client/NewRegionModal";
+import EditRegionModal from "../../components/Modal/client/EditRegionModal";
 import PageTitle from "../../utils/PageTitle";
-import SearchForm from "../../utils/SearchForm";
+import {
+  fetchPostSysRegion,
+  fetchSysRegions,
+  fetchUpdateSysRegion,
+} from "../../services/sys_service";
 
 const SysRegionPage = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
 
-  // EDIT BRAND
+  // EDIT REGION
   const [editIsOpen, setEditIsOpen] = useState(false);
-  const [currentBrand, setCurrentBrand] = useState(false);
-  // NEW BRAND
+  const [currentRegion, setCurrentRegion] = useState(false);
+  // NEW REGION
   const [newIsOpen, setNewIsOpen] = useState(false);
   const [loadingFetch, setLoadingFetch] = useState(false);
+
+  const { user } = useAuth();
 
   const columns = [
     {
@@ -31,7 +30,7 @@ const SysRegionPage = () => {
       key: "ID",
     },
     {
-      title: "Ad",
+      title: "Name",
       dataIndex: "NAME",
       key: "NAME",
       render: (_, record) => (
@@ -39,7 +38,7 @@ const SysRegionPage = () => {
           <Button
             type="link"
             onClick={() => {
-              setCurrentBrand(record);
+              setCurrentRegion(record);
               setEditIsOpen(true);
             }}
           >
@@ -49,19 +48,14 @@ const SysRegionPage = () => {
       ),
     },
     {
-      title: "Kateqoriya",
-      dataIndex: "TYPE",
-      key: "TYPE",
+      title: "SYS_ID",
+      dataIndex: "SYS_ID",
+      key: "SYS_ID",
     },
     {
-      title: "Kod",
-      dataIndex: "CODE",
-      key: "CODE",
-    },
-    {
-      title: "NR",
-      key: "NR",
-      dataIndex: "NR",
+      title: "CODE_ID",
+      key: "CODE_ID",
+      dataIndex: "CODE_ID",
     },
     {
       title: "Status",
@@ -77,51 +71,41 @@ const SysRegionPage = () => {
     },
   ];
 
-  async function handleBrand(params) {
+  async function handleRegion(params) {
     setLoadingFetch(true);
-    await fetchUpdateBrand(params, currentBrand.ID, user.TOKEN);
+    await fetchUpdateSysRegion(params, currentRegion.ID, user.TOKEN);
     setLoadingFetch(false);
-    getData();
+    getRegions();
   }
 
-  async function handleNewBrand(params) {
+  async function handleNewRegion(params) {
     setLoadingFetch(true);
-    await fetchPostBrand(params, user.TOKEN);
+    await fetchPostSysRegion(params, user.TOKEN);
     setLoadingFetch(false);
-    getData();
+    getRegions();
   }
 
-  async function onFinish(params) {
+  async function getRegions() {
     setLoading(true);
-    const data = await fetchBrandsByParam(params.value, user.TOKEN);
-    setDataSource(data);
-    setLoading(false);
-  }
-
-  async function getData() {
-    setLoading(true);
-    const data = await fetchBrands(user.TOKEN);
+    const data = await fetchSysRegions(user.TOKEN);
     setDataSource(data);
     setLoading(false);
   }
 
   useEffect(() => {
-    getData();
+    getRegions();
   }, []);
 
   return (
     <div>
       <PageTitle title={"regionlar"} />
-      <div className="flex justify-between mb-5 items-center">
-        <SearchForm onFinish={onFinish} />
-        <div className="flex gap-2 items-center">
-          <Button onClick={() => setNewIsOpen(true)} type="primary">
-            Yeni Region
-          </Button>
-          <Button onClick={getData} loading={loading}>
-            Yenilə
-          </Button>
-        </div>
+      <div className="flex justify-end mb-2 items-center gap-3">
+        <Button onClick={() => setNewIsOpen(true)} type="primary">
+          Yeni bölgə
+        </Button>
+        <Button onClick={getRegions} loading={loading}>
+          Yenilə
+        </Button>
       </div>
       <div>
         <Table
@@ -133,17 +117,17 @@ const SysRegionPage = () => {
           // scroll={{ x: "max-content" }}
         />
       </div>
-      <EditBrandModal
+      <EditRegionModal
         isOpen={editIsOpen}
         setIsOpen={setEditIsOpen}
-        current={currentBrand}
-        handleData={handleBrand}
+        current={currentRegion}
+        handleData={handleRegion}
         loading={loadingFetch}
       />
-      <NewBrandModal
+      <NewRegionModal
         isOpen={newIsOpen}
         setIsOpen={setNewIsOpen}
-        handleData={handleNewBrand}
+        handleData={handleNewRegion}
         loading={loadingFetch}
       />
     </div>
