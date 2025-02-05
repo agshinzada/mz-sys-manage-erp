@@ -4,16 +4,7 @@ import pack from "../../../package.json";
 
 function MainFooter(props) {
   return (
-    <Footer
-      style={{
-        textAlign: "center",
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-      {...props}
-    >
+    <Footer className="p-4 text-center flex flex-col items-center" {...props}>
       <p className="text-[13px]">
         Mazarina Trade Company ©{new Date().getFullYear()} V{pack.version}
       </p>

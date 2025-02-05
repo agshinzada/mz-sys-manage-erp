@@ -1,4 +1,4 @@
-import { Button, Layout, theme } from "antd";
+import { Button, Layout } from "antd";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import logo from "../assets/logo.svg";
@@ -11,9 +11,6 @@ const { Header, Content, Sider } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { setUser } = useAuth();
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
 
   return (
     <Layout
@@ -27,19 +24,15 @@ const MainLayout = () => {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div className="demo-logo-vertical flex items-center justify-center flex-wrap gap-2 px-3 py-5">
-          <img src={logo} alt="logo" className="w-8" />
-          <h1 className="text-white text-[17px] font-bold">SYS manage</h1>
+          <img src={logo} alt="logo" className="w-5 sm:w-8" />
+          <h1 className="text-white text-xs sm:text-[17px] font-bold">
+            SYS manage
+          </h1>
         </div>
         <MenuItem />
       </Sider>
       <Layout>
-        <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-          }}
-          className="flex justify-end items-center"
-        >
+        <Header className="flex justify-end items-center p-0 bg-white">
           <Button
             className="mr-5"
             onClick={() => {
@@ -50,19 +43,8 @@ const MainLayout = () => {
             Çıxış
           </Button>
         </Header>
-        <Content
-          style={{
-            margin: "20px 16px",
-          }}
-        >
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
+        <Content className="mt-2 sm:m-4">
+          <div className="p-6 min-h-96 bg-white sm:rounded-lg">
             <Outlet />
           </div>
         </Content>

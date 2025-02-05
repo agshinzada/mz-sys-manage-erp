@@ -37,7 +37,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <PrivateRoute>
+      <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
         <MainLayout>
           <App />
         </MainLayout>
@@ -47,96 +47,188 @@ const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: <DashboardPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
+            <DashboardPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "orders/list",
-        element: <OrderListPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <OrderListPage />{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "payments/list",
-        element: <PaymentListPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <PaymentListPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "payments/remain",
-        element: <PaymentRemainPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
+            <PaymentRemainPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "client/category",
-        element: <ClientCategoryPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <ClientCategoryPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "client/discounts",
-        element: <DiscountPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <DiscountPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "client/campaigns",
-        element: <CampaignPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <CampaignPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "client/delivery",
-        element: <DeliveryPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <DeliveryPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "client/visits",
-        element: <VisitDayPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <VisitDayPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "client/users",
-        element: <ClientUsersPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <ClientUsersPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "client/bulk",
-        element: <BulkClientPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
+            <BulkClientPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "client/logs",
-        element: <LogPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
+            <LogPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "setting/users",
-        element: <SysUsersPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <SysUsersPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "setting/brands",
-        element: <SysBrandPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <SysBrandPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "setting/regions",
-        element: <SysRegionPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <SysRegionPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "setting/status",
-        element: <StatusCodesPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <StatusCodesPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "setting/status/orderkind",
-        element: <OrderkindCodesPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <OrderkindCodesPage />,{" "}
+          </PrivateRoute>
+        ),
       },
 
       {
         path: "logo/orders",
-        element: <LogoOrderPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <LogoOrderPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "archive/users",
-        element: <ArchiveUsersPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <ArchiveUsersPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "archive/logs",
-        element: <ArchiveLogPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
+            <ArchiveLogPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "mobim/devices",
-        element: <MobimDevicePage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <MobimDevicePage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "mobim/connections",
-        element: <MobimConnectionPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <MobimConnectionPage />,{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "report/retrification",
-        element: <RetrificationReportPage />,
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
+            <RetrificationReportPage />,{" "}
+          </PrivateRoute>
+        ),
       },
     ],
   },

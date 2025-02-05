@@ -80,8 +80,8 @@ const NewUserModal = ({ handleUser, loading, isOpen, setIsOpen }) => {
                 label: "Admin",
               },
               {
-                value: "USER",
-                label: "User",
+                value: "MODERATOR",
+                label: "Moderator",
               },
             ]}
           />

@@ -51,7 +51,7 @@ const DashboardPage = () => {
   async function getDelayedOrders() {
     setLoading(true);
     const data = await fetchDelayedOrders(user.TOKEN);
-    setDelayedOrders(data.slice(0, 4));
+    setDelayedOrders(data?.slice(0, 4));
     setLoading(false);
   }
   async function getErrorOrders() {
@@ -80,7 +80,7 @@ const DashboardPage = () => {
   async function getDelayedPayments() {
     setLoading(true);
     const data = await fetchDelayedPayments(user.TOKEN);
-    setDelayedPayments(data.slice(0, 4));
+    setDelayedPayments(data?.slice(0, 4));
     setLoading(false);
   }
 
@@ -134,7 +134,7 @@ const DashboardPage = () => {
         </Button>
       </div>
       <div>
-        <div className="flex gap-3 justify-center my-6">
+        <div className="flex gap-3 sm:justify-center my-6 flex-wrap">
           {services?.map((item) => (
             <ServiceInfoButton
               title={item.name}
@@ -146,11 +146,11 @@ const DashboardPage = () => {
           ))}
         </div>
         <div className="flex flex-col gap-4">
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-col lg:flex-row">
             <List
               header={
                 <div>
-                  Running tasks - <Tag color="gray">{dataSource.length}</Tag>
+                  Running tasks - <Tag color="gray">{dataSource?.length}</Tag>
                 </div>
               }
               className="w-full"
@@ -162,9 +162,9 @@ const DashboardPage = () => {
                   <div className="flex gap-4 items-center">
                     <MdOutlineRunningWithErrors size={"1.6rem"} />
                     <div>
-                      <p>{item.BRAND_NAME}</p>
+                      <p>{item?.BRAND_NAME}</p>
                       <p className="text-gray-500 text-xs">
-                        {item.REGION_NAME}
+                        {item?.REGION_NAME}
                       </p>
                     </div>
                   </div>
@@ -174,42 +174,44 @@ const DashboardPage = () => {
             <List
               header={
                 <div>
-                  Passive tasks - <Tag color="gray">{passiveTasks.length}</Tag>
+                  Passive tasks - <Tag color="gray">{passiveTasks?.length}</Tag>
                 </div>
               }
               bordered
               loading={loading}
-              className="w-full "
+              className="w-full"
               dataSource={passiveTasks}
               renderItem={(item, index) => (
                 <List.Item className="w-full" key={index}>
-                  <div className="flex gap-4 items-center w-full">
-                    <MdDisabledByDefault size={"1.6rem"} />
-                    <div className="flex justify-between items-center gap-2 w-full">
-                      <div>
-                        <p>{item.BRAND_NAME}</p>
-                        <p className="text-gray-500 text-xs">
-                          {item.REGION_NAME}
-                        </p>
+                  <div className="flex gap-4 items-center w-full border border-slate-300 p-4 sm:border-none sm:p-0 rounded-lg">
+                    <div className="flex items-center gap-1 flex-col sm:flex-row sm:justify-between w-full">
+                      <div className="flex items-center gap-2 w-full">
+                        <MdDisabledByDefault size={"1.6rem"} />
+                        <div>
+                          <p>{item?.BRAND_NAME}</p>
+                          <p className="text-gray-500 text-xs">
+                            {item?.REGION_NAME}
+                          </p>
+                        </div>
                       </div>
 
                       <div className="flex gap-2">
                         <p className="text-xs">
                           Satış:{" "}
                           <span className="font-bold">
-                            {item.task1 === 1 ? "passive" : "active"}
+                            {item?.task1 === 1 ? "passive" : "active"}
                           </span>
                         </p>
                         <p className="text-xs">
                           Kassa:{" "}
                           <span className="font-bold">
-                            {item.task2 === 1 ? "passive" : "active"}
+                            {item?.task2 === 1 ? "passive" : "active"}
                           </span>
                         </p>
                         <p className="text-xs">
                           Anbar:{" "}
                           <span className="font-bold">
-                            {item.task3 === 1 ? "passive" : "active"}
+                            {item?.task3 === 1 ? "passive" : "active"}
                           </span>
                         </p>
                       </div>
@@ -219,12 +221,12 @@ const DashboardPage = () => {
               )}
             />
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-col lg:flex-row">
             <List
               header={
                 <div>
                   Delayed Orders -{" "}
-                  <Tag color="gray">{delayedOrders.length}</Tag>
+                  <Tag color="gray">{delayedOrders?.length}</Tag>
                 </div>
               }
               className="w-full"
@@ -240,27 +242,28 @@ const DashboardPage = () => {
                         Device:
                         <Button
                           type="link"
-                          onClick={() => openDeviceModal(item.device_id)}
+                          onClick={() => openDeviceModal(item?.device_id)}
                         >
-                          {item.device_id}
+                          {item?.device_id}
                         </Button>
                       </p>
                       <p className="text-gray-500 text-xs">
-                        Order: {item.order_id}
+                        Order: {item?.order_id}
                       </p>
                       <p className="text-gray-500 text-xs">
-                        Date: {formatDateTime(item.InsertedDate, -4)}
+                        Date: {formatDateTime(item?.InsertedDate, -4)}
                       </p>
                       <p className="text-gray-500 text-xs flex gap-1">
-                        <Tag color="blue">{item.ORDERKIND_NAME}</Tag>
-                        <Tag color="blue">{item.BRAND_NAME}</Tag>
+                        <Tag color="blue">{item?.ORDERKIND_NAME}</Tag>
+                        <Tag color="blue">{item?.BRAND_NAME}</Tag>
+                        <Tag color="blue">{item?.SPECODE}</Tag>
                       </p>
                     </div>
                   </div>
                 </List.Item>
               )}
             >
-              {delayedOrders.length ? (
+              {delayedOrders?.length ? (
                 <div className="flex justify-end p-2">
                   <Button
                     type="primary"
@@ -283,7 +286,7 @@ const DashboardPage = () => {
               header={
                 <div>
                   Delayed Payments -{" "}
-                  <Tag color="gray">{delayedPayments.length}</Tag>
+                  <Tag color="gray">{delayedPayments?.length}</Tag>
                 </div>
               }
               className="w-full"
@@ -299,27 +302,28 @@ const DashboardPage = () => {
                         Device:
                         <Button
                           type="link"
-                          onClick={() => openDeviceModal(item.device_id)}
+                          onClick={() => openDeviceModal(item?.device_id)}
                         >
-                          {item.device_id}
+                          {item?.device_id}
                         </Button>
                       </p>
                       <p className="text-gray-500 text-xs">
-                        Order: {item.payment_id}
+                        Order: {item?.payment_id}
                       </p>
                       <p className="text-gray-500 text-xs">
-                        Date: {formatDateTime(item.InsertedDate, -4)}
+                        Date: {formatDateTime(item?.InsertedDate, -4)}
                       </p>
                       <p className="text-gray-500 text-xs flex gap-1">
-                        <Tag color="blue">{item.BRAND_NAME}</Tag>
-                        <Tag color="blue">{item.amount}</Tag>
+                        <Tag color="blue">{item?.BRAND_NAME}</Tag>
+                        <Tag color="blue">{item?.amount}</Tag>
+                        <Tag color="blue">{item?.SPECODE}</Tag>
                       </p>
                     </div>
                   </div>
                 </List.Item>
               )}
             >
-              {delayedPayments.length ? (
+              {delayedPayments?.length ? (
                 <div className="flex justify-end p-2 items-end">
                   <Button
                     type="primary"
@@ -339,12 +343,12 @@ const DashboardPage = () => {
               )}
             </List>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-col lg:flex-row">
             <List
               header={
                 <div>
                   Orders - <span className="font-bold">ERR_WH</span>{" "}
-                  <Tag color="gray">{errorWhOrders.length}</Tag>
+                  <Tag color="gray">{errorWhOrders?.length}</Tag>
                 </div>
               }
               className="w-full"
@@ -356,19 +360,21 @@ const DashboardPage = () => {
                   <div className="flex gap-4 items-center">
                     <RiRestTimeLine size={"1.6rem"} />
                     <div className="flex flex-col gap-1">
-                      <p>Code: {item.CODE}</p>
+                      <p>Code: {item?.CODE}</p>
                       <p className="text-gray-500 text-xs">
-                        Name: {item.DEFINITION_}
-                      </p>
-                      <p className="text-gray-500 text-xs">Route: {item.RUT}</p>
-                      <p className="text-gray-500 text-xs">
-                        Delivery: {item.DELIVERY}
+                        Name: {item?.DEFINITION_}
                       </p>
                       <p className="text-gray-500 text-xs">
-                        Total: {item.NETTOTAL}
+                        Route: {item?.RUT}
                       </p>
                       <p className="text-gray-500 text-xs">
-                        Date: {new Date(item.DATE_).toLocaleDateString("az")}
+                        Delivery: {item?.DELIVERY}
+                      </p>
+                      <p className="text-gray-500 text-xs">
+                        Total: {item?.NETTOTAL}
+                      </p>
+                      <p className="text-gray-500 text-xs">
+                        Date: {new Date(item?.DATE_).toLocaleDateString("az")}
                       </p>
                     </div>
                   </div>
@@ -380,7 +386,7 @@ const DashboardPage = () => {
               header={
                 <div>
                   Orders - <span className="font-bold">ERR_CNG</span>{" "}
-                  <Tag color="gray">{errorCngOrders.length}</Tag>
+                  <Tag color="gray">{errorCngOrders?.length}</Tag>
                 </div>
               }
               className="w-full"
@@ -392,19 +398,21 @@ const DashboardPage = () => {
                   <div className="flex gap-4 items-center">
                     <RiRestTimeLine size={"1.6rem"} />
                     <div className="flex flex-col gap-1">
-                      <p>Code: {item.CODE}</p>
+                      <p>Code: {item?.CODE}</p>
                       <p className="text-gray-500 text-xs">
-                        Name: {item.DEFINITION_}
-                      </p>
-                      <p className="text-gray-500 text-xs">Route: {item.RUT}</p>
-                      <p className="text-gray-500 text-xs">
-                        Delivery: {item.DELIVERY}
+                        Name: {item?.DEFINITION_}
                       </p>
                       <p className="text-gray-500 text-xs">
-                        Total: {item.NETTOTAL}
+                        Route: {item?.RUT}
                       </p>
                       <p className="text-gray-500 text-xs">
-                        Date: {new Date(item.DATE_).toLocaleDateString("az")}
+                        Delivery: {item?.DELIVERY}
+                      </p>
+                      <p className="text-gray-500 text-xs">
+                        Total: {item?.NETTOTAL}
+                      </p>
+                      <p className="text-gray-500 text-xs">
+                        Date: {new Date(item?.DATE_).toLocaleDateString("az")}
                       </p>
                     </div>
                   </div>

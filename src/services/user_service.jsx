@@ -26,13 +26,13 @@ export async function fetchSysUsersByParam(value, token) {
 
 export async function fetchNewUser(data, token) {
   try {
-    await axios.post(
+    const res = await axios.post(
       `${import.meta.env.VITE_API_URL}/auth/register?token=${token}`,
       data
     );
-    Swal.fire("Əlavə edildi!", "", "success");
+    notification.success({ message: res.data });
   } catch (error) {
-    Swal.fire("Sistem xətası", error.response.data, "error");
+    notification.error({ message: error.response.data });
   }
 }
 
@@ -42,7 +42,7 @@ export async function fetchPutSysUser(id, data, token) {
       `${import.meta.env.VITE_API_URL}/auth/users/${id}?token=${token}`,
       data
     );
-    notification.error({ message: response.data });
+    notification.success({ message: response.data });
   } catch (error) {
     notification.error({ message: error.response.data });
   }

@@ -14,7 +14,7 @@ const ServiceInfoButton = ({ title, status, data, loading }) => {
     }
   };
   return (
-    <Button loading={loading}>
+    <Button loading={loading} className="w-full sm:w-fit">
       <div className="flex gap-2">
         <span>{title}</span>
         <div className="flex items-center gap-1">

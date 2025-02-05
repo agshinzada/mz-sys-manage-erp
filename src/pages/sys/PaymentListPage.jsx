@@ -37,6 +37,17 @@ const PaymentListPage = () => {
       ),
     },
     {
+      title: "Rut",
+      dataIndex: "SPECODE",
+      key: "SPECODE",
+      ellipsis: true,
+      render: (_, { SPECODE }) => (
+        <>
+          <Tag color="blue">{SPECODE}</Tag>
+        </>
+      ),
+    },
+    {
       title: "Device id",
       dataIndex: "device_id",
       key: "device_id",
@@ -207,9 +218,9 @@ const PaymentListPage = () => {
         <Table
           columns={columns}
           dataSource={dataSource}
-          pagination={false}
           rowKey={(record) => record.record_id}
           loading={loading}
+          pagination={{ pageSize: 50 }}
         />
       </div>
       <DeviceDetailModal

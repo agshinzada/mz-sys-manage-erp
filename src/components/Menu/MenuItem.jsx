@@ -8,61 +8,108 @@ import { GoDatabase } from "react-icons/go";
 import { ImProfile } from "react-icons/im";
 import { MdDashboard, MdOutlineSettings } from "react-icons/md";
 import { useSite } from "../../context/SiteContext";
-
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-
-const items = [
-  getItem("Dashboard", 31, <MdDashboard size={"1.3rem"} />),
-  getItem("Sifarişlər", 1, <IoDocumentLockOutline size={"1.3rem"} />, [
-    getItem("Siyahı", 2),
-    getItem("LOGO", 22),
-  ]),
-  getItem("Ödənişlər", 3, <IoIosCash size={"1.2rem"} />, [
-    getItem("Siyahı", 4),
-    getItem("Kassa qalıq", 17),
-  ]),
-  getItem("Mobim", 23, <GoDatabase size={"1.2rem"} />, [
-    getItem("Cihazlar", 24),
-    getItem("Connections", 25),
-  ]),
-  getItem("Yeni müştəri", 5, <ImProfile size={"1.2rem"} />, [
-    getItem("Müştəri kateqoriyası", 8),
-    getItem("Endirimlər", 9),
-    getItem("Kampaniyalar", 10),
-    getItem("Təslimatçılar", 11),
-    getItem("Vizit günləri", 12),
-    getItem("İstifadəçilər", 13),
-    getItem("Toplu müştəri", 14),
-    getItem("Loglar", 16),
-  ]),
-  getItem("Arxiv", 18, <IoMdArchive size={"1.2rem"} />, [
-    getItem("İstifadəçilər", 19),
-    getItem("Log", 34),
-  ]),
-
-  getItem("Hesabatlar", 28, <TbReportSearch size={"1.2rem"} />, [
-    getItem("Düzəliş aktı", 29),
-  ]),
-  getItem("Administration", 20, <MdOutlineSettings size={"1.2rem"} />, [
-    getItem("İstifadəçilər", 21),
-    getItem("Regionlar", 32),
-    getItem("Brendlər", 33),
-    getItem("Status kodları", 30),
-    getItem("Orderkind kodları", 35),
-  ]),
-  //   getItem("Files", "9", <FileOutlined />),
-];
+import { useAuth } from "../../context/AuthContext";
 
 const MenuItem = () => {
   const navigate = useNavigate();
   const { menuId, setMenuId } = useSite();
+  const { user } = useAuth();
+
+  function getItem(label, key, icon, children, role = []) {
+    if (role.includes(user.ROLE)) {
+      return {
+        key,
+        icon,
+        children,
+        label,
+      };
+    }
+    return;
+  }
+
+  const items = [
+    getItem("Dashboard", 31, <MdDashboard size={"1.3rem"} />, null, [
+      "ADMIN",
+      "MODERATOR",
+    ]),
+    getItem(
+      "Sifarişlər",
+      1,
+      <IoDocumentLockOutline size={"1.3rem"} />,
+      [
+        getItem("Siyahı", 2, "", null, ["ADMIN"]),
+        getItem("LOGO", 22, "", null, ["ADMIN"]),
+      ],
+      ["ADMIN"]
+    ),
+    getItem(
+      "Ödənişlər",
+      3,
+      <IoIosCash size={"1.2rem"} />,
+      [
+        getItem("Siyahı", 4, "", null, ["ADMIN"]),
+        getItem("Kassa qalıq", 17, "", null, ["ADMIN", "MODERATOR"]),
+      ],
+      ["ADMIN", "MODERATOR"]
+    ),
+    getItem(
+      "Mobim",
+      23,
+      <GoDatabase size={"1.2rem"} />,
+      [
+        getItem("Cihazlar", 24, "", null, ["ADMIN"]),
+        getItem("Connections", 25, "", null, ["ADMIN"]),
+      ],
+      ["ADMIN"]
+    ),
+    getItem(
+      "Yeni müştəri",
+      5,
+      <ImProfile size={"1.2rem"} />,
+      [
+        getItem("Müştəri kateqoriyası", 8, "", null, ["ADMIN"]),
+        getItem("Endirimlər", 9, "", null, ["ADMIN"]),
+        getItem("Kampaniyalar", 10, "", null, ["ADMIN"]),
+        getItem("Təslimatçılar", 11, "", null, ["ADMIN"]),
+        getItem("Vizit günləri", 12, "", null, ["ADMIN"]),
+        getItem("İstifadəçilər", 13, "", null, ["ADMIN"]),
+        getItem("Toplu müştəri", 14, "", null, ["ADMIN", "MODERATOR"]),
+        getItem("Loglar", 16, "", null, ["ADMIN", "MODERATOR"]),
+      ],
+      ["ADMIN", "MODERATOR"]
+    ),
+    getItem(
+      "Arxiv",
+      18,
+      <IoMdArchive size={"1.2rem"} />,
+      [
+        getItem("İstifadəçilər", 19, "", null, ["ADMIN"]),
+        getItem("Log", 34, "", null, ["ADMIN", "MODERATOR"]),
+      ],
+      ["ADMIN", "MODERATOR"]
+    ),
+
+    getItem(
+      "Hesabatlar",
+      28,
+      <TbReportSearch size={"1.2rem"} />,
+      [getItem("Düzəliş aktı", 29, "", null, ["ADMIN", "MODERATOR"])],
+      ["ADMIN", "MODERATOR"]
+    ),
+    getItem(
+      "Administration",
+      20,
+      <MdOutlineSettings size={"1.2rem"} />,
+      [
+        getItem("İstifadəçilər", 21, "", null, ["ADMIN"]),
+        getItem("Regionlar", 32, "", null, ["ADMIN"]),
+        getItem("Brendlər", 33, "", null, ["ADMIN"]),
+        getItem("Status kodları", 30, "", null, ["ADMIN"]),
+        getItem("Orderkind kodları", 35, "", null, ["ADMIN"]),
+      ],
+      ["ADMIN"]
+    ),
+  ];
 
   function handleMenu(event) {
     switch (parseInt(event.key)) {
