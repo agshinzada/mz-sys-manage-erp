@@ -11,6 +11,7 @@ import EditCampaignModal from "../../components/Modal/client/EditCampaignModal";
 import NewCampaignModal from "../../components/Modal/client/NewCampaignModal";
 import PageTitle from "../../utils/PageTitle";
 import SearchForm from "../../utils/SearchForm";
+import { BsPencilSquare } from "react-icons/bs";
 
 const CampaignPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -34,19 +35,6 @@ const CampaignPage = () => {
       title: "Code",
       dataIndex: "CODE",
       key: "CODE",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentCampaign(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.CODE}
-          </Button>
-        </>
-      ),
     },
 
     {
@@ -82,6 +70,26 @@ const CampaignPage = () => {
             {parseInt(STATUS) === 0 ? "AKTIV" : "DEAKTIV"}
           </Tag>
         </>
+      ),
+    },
+    {
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
+      render: (_, record) => (
+        <div className="">
+          <Button
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentCampaign(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+        </div>
       ),
     },
   ];

@@ -32,6 +32,9 @@ import SysBrandPage from "./pages/sys/SysBrandPage.jsx";
 import SysRegionPage from "./pages/sys/SysRegionPage.jsx";
 import ArchiveLogPage from "./pages/archive/ArchiveLogPage.jsx";
 import OrderkindCodesPage from "./pages/sys/OrderkindCodesPage.jsx";
+import MobimUserPage from "./pages/mobim/MobimUserPage.jsx";
+import MobimTaskPage from "./pages/mobim/MobimTaskPage.jsx";
+import MobimServicePage from "./pages/mobim/MobimServicePage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -219,6 +222,30 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
             <MobimConnectionPage />,{" "}
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "mobim/services",
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <MobimServicePage />,{" "}
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "mobim/tasks",
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <MobimTaskPage />,{" "}
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "mobim/users",
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN"]}>
+            <MobimUserPage />,{" "}
           </PrivateRoute>
         ),
       },

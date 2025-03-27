@@ -1,6 +1,5 @@
 import { notification } from "antd";
 import axios from "axios";
-import Swal from "sweetalert2";
 
 export async function fetchServices(token) {
   try {
@@ -41,59 +40,60 @@ export async function fetchOpenAllTasks(token) {
     const response = await axios.put(
       `${import.meta.env.VITE_API_URL}/mobim/services/tasks/open?token=${token}`
     );
-    return response.data;
+    notification.success({ message: response.data });
   } catch (error) {
-    Swal.fire("Sistem xətası", error.response.data, "error");
+    notification.error({ message: error.response.data });
   }
 }
 
-export async function fetchCloseAllTasks(token) {
+export async function fetchBulkTaskStatus(arr, token) {
   try {
     const response = await axios.put(
       `${
         import.meta.env.VITE_API_URL
-      }/mobim/services/tasks/close?token=${token}`
+      }/mobim/services/tasks/status/bulk?token=${token}`,
+      arr
     );
-    return response.data;
+    notification.success({ message: response.data });
   } catch (error) {
-    Swal.fire("Sistem xətası", error.response.data, "error");
+    notification.error({ message: error.response.data });
   }
 }
 
-export async function fetchChangeTaskDate(data, token) {
+export async function fetchPutServiceStatus(id, token) {
   try {
     const response = await axios.put(
       `${
         import.meta.env.VITE_API_URL
-      }/mobim/services/tasks/date?token=${token}`,
-      data
+      }/mobim/services/status/${id}?token=${token}`
     );
     return response.data;
   } catch (error) {
-    Swal.fire("Sistem xətası", error.response.data, "error");
+    notification.error({ message: error.response.data });
   }
 }
 
-// export async function fetchUpdateBrand(data, id, token) {
-//   try {
-//     const response = await axios.put(
-//       `${import.meta.env.VITE_API_URL}/clients/brands/${id}?token=${token}`,
-//       data
-//     );
-//     notification.success({ message: response.data });
-//   } catch (error) {
-//     notification.error({ message: error.response.data });
-//   }
-// }
+export async function fetchPutTaskStatus(id, token) {
+  try {
+    const response = await axios.put(
+      `${
+        import.meta.env.VITE_API_URL
+      }/mobim/services/tasks/status/${id}?token=${token}`
+    );
+    notification.success({ message: response.data });
+  } catch (error) {
+    notification.error({ message: error.response.data });
+  }
+}
 
-// export async function fetchPostBrand(data, token) {
-//   try {
-//     const response = await axios.post(
-//       `${import.meta.env.VITE_API_URL}/clients/brands?token=${token}`,
-//       data
-//     );
-//     notification.success({ message: response.data });
-//   } catch (error) {
-//     notification.error({ message: error.response.data });
-//   }
-// }
+export async function fetchPutService(params, id, token) {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/mobim/services/${id}?token=${token}`,
+      params
+    );
+    return response.data;
+  } catch (error) {
+    notification.error({ message: error.response.data });
+  }
+}

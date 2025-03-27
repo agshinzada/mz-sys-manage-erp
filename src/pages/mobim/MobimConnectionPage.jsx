@@ -1,4 +1,4 @@
-import { Button, Table } from "antd";
+import { Button, Popconfirm, Table } from "antd";
 import PageTitle from "../../utils/PageTitle";
 import SearchForm from "../../utils/SearchForm";
 import { useEffect, useState } from "react";
@@ -13,6 +13,8 @@ import { useAuth } from "../../context/AuthContext";
 import CopyConnectionModal from "../../components/Modal/mobim/CopyConnectionModal";
 import EditConnectionModal from "../../components/Modal/mobim/EditConnectionModal";
 import Swal from "sweetalert2";
+import { BsPencilSquare } from "react-icons/bs";
+import { MdDelete } from "react-icons/md";
 
 const MobimConnectionPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -44,19 +46,6 @@ const MobimConnectionPage = () => {
       title: "REGION",
       dataIndex: "c_conn_name",
       key: "c_conn_name",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentConnection(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.c_conn_name}
-          </Button>
-        </>
-      ),
     },
     {
       title: "Server",
@@ -92,6 +81,38 @@ const MobimConnectionPage = () => {
       title: "Password",
       dataIndex: "c_password",
       key: "c_password",
+    },
+    {
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
+      render: (_, record) => (
+        <div className="">
+          <Button
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentConnection(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            title="Delete"
+            description="Bağlantı silinəcək"
+            onConfirm={deleteConnection}
+            // onCancel={cancel}
+            okText="Bəli"
+            cancelText="İmtina"
+          >
+            <Button size="small" icon={<MdDelete />} danger>
+              Delete
+            </Button>
+          </Popconfirm>
+        </div>
+      ),
     },
   ];
 

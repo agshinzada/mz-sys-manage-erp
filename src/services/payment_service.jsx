@@ -48,3 +48,15 @@ export async function fetchPaymentRemain(data, token) {
     notification.error({ message: error.response.data });
   }
 }
+
+export async function fetchChangePaymentStatus(data, token) {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/payments/status?token=${token}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    notification.error({ message: error.response.data });
+  }
+}

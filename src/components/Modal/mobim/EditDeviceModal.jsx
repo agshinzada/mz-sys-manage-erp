@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, Modal, Select } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import { useEffect } from "react";
 
 const EditDeviceModal = ({
@@ -7,7 +7,6 @@ const EditDeviceModal = ({
   loading,
   handleData,
   current,
-  handleDelete,
 }) => {
   const [form] = Form.useForm();
 
@@ -287,14 +286,6 @@ const EditDeviceModal = ({
               Submit
             </Button>
           </Form.Item>
-          <Button
-            type="primary"
-            danger
-            loading={loading}
-            onClick={handleDelete}
-          >
-            Delete
-          </Button>
         </div>
       </Form>
     </Modal>

@@ -47,7 +47,6 @@ const OrderListPage = () => {
       dataIndex: "status",
       key: "status",
       ellipsis: true,
-
       render: (_, record) => (
         <>
           <Popconfirm

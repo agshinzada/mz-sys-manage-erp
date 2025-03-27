@@ -13,7 +13,7 @@ const EditDiscountModal = ({
   useEffect(() => {
     if (current) {
       form.setFieldsValue({
-        code: current?.VALUE,
+        value: current?.VALUE,
         label: current?.LABEL,
         status: current?.STATUS,
       });

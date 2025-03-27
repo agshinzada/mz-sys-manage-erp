@@ -14,6 +14,8 @@ import bcrypt from "bcryptjs";
 import ChangePasswordModal from "../../components/Modal/ChangePasswordModal";
 import PageTitle from "../../utils/PageTitle";
 import SearchForm from "../../utils/SearchForm";
+import { BsPencilSquare } from "react-icons/bs";
+import { MdOutlinePassword } from "react-icons/md";
 
 const ClientUsersPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -45,19 +47,6 @@ const ClientUsersPage = () => {
       title: "Username",
       dataIndex: "USERNAME",
       key: "USERNAME",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentUser(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.USERNAME}
-          </Button>
-        </>
-      ),
     },
     {
       title: "Role",
@@ -77,12 +66,27 @@ const ClientUsersPage = () => {
         </>
       ),
     },
+
     {
-      title: "Pass",
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
       render: (_, record) => (
-        <>
+        <div className="">
           <Button
-            type="link"
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentUser(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            size="small"
+            icon={<MdOutlinePassword />}
             onClick={() => {
               setCurrentUser(record);
               setChangePassIsOpen(true);
@@ -90,7 +94,7 @@ const ClientUsersPage = () => {
           >
             Şifrəni dəyiş
           </Button>
-        </>
+        </div>
       ),
     },
   ];

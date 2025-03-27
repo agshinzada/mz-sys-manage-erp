@@ -13,6 +13,7 @@ import EditDeliveryModal from "../../components/Modal/client/EditDeliveryModal";
 import NewDeliveryModal from "../../components/Modal/client/NewDeliveryModal";
 import PageTitle from "../../utils/PageTitle";
 import SearchForm from "../../utils/SearchForm";
+import { BsPencilSquare } from "react-icons/bs";
 
 const DeliveryPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -41,19 +42,6 @@ const DeliveryPage = () => {
       title: "Name",
       dataIndex: "NAME",
       key: "NAME",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentDelivery(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.NAME}
-          </Button>
-        </>
-      ),
     },
     {
       title: "Region",
@@ -78,6 +66,26 @@ const DeliveryPage = () => {
             {parseInt(STATUS) === 0 ? "AKTIV" : "DEAKTIV"}
           </Tag>
         </>
+      ),
+    },
+    {
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
+      render: (_, record) => (
+        <div className="">
+          <Button
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentDelivery(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+        </div>
       ),
     },
   ];

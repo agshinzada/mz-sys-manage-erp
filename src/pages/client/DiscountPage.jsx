@@ -12,6 +12,7 @@ import EditDiscountModal from "../../components/Modal/client/EditDiscountModal";
 import NewDiscountModal from "../../components/Modal/client/NewDiscountModal";
 import PageTitle from "../../utils/PageTitle";
 import SearchForm from "../../utils/SearchForm";
+import { BsPencilSquare } from "react-icons/bs";
 
 const DiscountPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -35,19 +36,6 @@ const DiscountPage = () => {
       title: "Code",
       dataIndex: "VALUE",
       key: "VALUE",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentDiscount(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.VALUE}
-          </Button>
-        </>
-      ),
     },
 
     {
@@ -77,6 +65,26 @@ const DiscountPage = () => {
             {parseInt(STATUS) === 0 ? "AKTIV" : "DEAKTIV"}
           </Tag>
         </>
+      ),
+    },
+    {
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
+      render: (_, record) => (
+        <div className="">
+          <Button
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentDiscount(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+        </div>
       ),
     },
   ];

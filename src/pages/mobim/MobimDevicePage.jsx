@@ -1,4 +1,4 @@
-import { Button, Radio, Table, Tag } from "antd";
+import { Button, Popconfirm, Table, Tag } from "antd";
 import PageTitle from "../../utils/PageTitle";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
@@ -14,6 +14,8 @@ import EditDeviceModal from "../../components/Modal/mobim/EditDeviceModal";
 import { useSite } from "../../context/SiteContext";
 import CopyDeviceModal from "../../components/Modal/mobim/CopyDeviceModal";
 import Swal from "sweetalert2";
+import { MdDelete } from "react-icons/md";
+import { BsPencilSquare } from "react-icons/bs";
 
 const MobimDevicePage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -41,19 +43,6 @@ const MobimDevicePage = () => {
       title: "ID",
       dataIndex: "Device",
       key: "Device",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentDevice(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.Device}
-          </Button>
-        </>
-      ),
     },
     {
       title: "REGION",
@@ -76,6 +65,38 @@ const MobimDevicePage = () => {
       title: "Ad",
       dataIndex: "SyncHTTP",
       key: "SyncHTTP",
+    },
+    {
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
+      render: (_, record) => (
+        <div className="">
+          <Button
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentDevice(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            title="Delete"
+            description="Cihaz silinəcək"
+            onConfirm={deleteDevice}
+            // onCancel={cancel}
+            okText="Bəli"
+            cancelText="İmtina"
+          >
+            <Button size="small" icon={<MdDelete />} danger>
+              Delete
+            </Button>
+          </Popconfirm>
+        </div>
+      ),
     },
   ];
 

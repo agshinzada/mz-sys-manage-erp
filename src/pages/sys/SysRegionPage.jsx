@@ -9,6 +9,7 @@ import {
   fetchSysRegions,
   fetchUpdateSysRegion,
 } from "../../services/sys_service";
+import { BsPencilSquare } from "react-icons/bs";
 
 const SysRegionPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -33,19 +34,6 @@ const SysRegionPage = () => {
       title: "Name",
       dataIndex: "NAME",
       key: "NAME",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentRegion(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.NAME}
-          </Button>
-        </>
-      ),
     },
     {
       title: "SYS_ID",
@@ -67,6 +55,26 @@ const SysRegionPage = () => {
             {parseInt(STATUS) === 0 ? "AKTIV" : "DEAKTIV"}
           </Tag>
         </>
+      ),
+    },
+    {
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
+      render: (_, record) => (
+        <div className="">
+          <Button
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentRegion(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+        </div>
       ),
     },
   ];

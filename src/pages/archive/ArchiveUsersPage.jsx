@@ -13,6 +13,8 @@ import bcrypt from "bcryptjs";
 import { useAuth } from "../../context/AuthContext";
 import ChangePasswordModal from "../../components/Modal/ChangePasswordModal";
 import EditUserModal from "../../components/Modal/archive/EditUserModal";
+import { BsPencilSquare } from "react-icons/bs";
+import { MdOutlinePassword } from "react-icons/md";
 
 const ArchiveUsersPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -49,19 +51,6 @@ const ArchiveUsersPage = () => {
       title: "Username",
       dataIndex: "USERNAME",
       key: "USERNAME",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentUser(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.USERNAME}
-          </Button>
-        </>
-      ),
     },
     {
       title: "Role",
@@ -81,12 +70,27 @@ const ArchiveUsersPage = () => {
         </>
       ),
     },
+
     {
-      title: "Pass",
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
       render: (_, record) => (
-        <>
+        <div className="">
           <Button
-            type="link"
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentUser(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            size="small"
+            icon={<MdOutlinePassword />}
             onClick={() => {
               setCurrentUser(record);
               setChangePassIsOpen(true);
@@ -94,7 +98,7 @@ const ArchiveUsersPage = () => {
           >
             Şifrəni dəyiş
           </Button>
-        </>
+        </div>
       ),
     },
   ];

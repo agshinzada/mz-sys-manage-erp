@@ -11,6 +11,7 @@ import {
 } from "../../services/sys_service";
 import NewStatusModal from "../../components/Modal/NewStatusModal";
 import EditStatusModal from "../../components/Modal/EditStatusModal";
+import { BsPencilSquare } from "react-icons/bs";
 
 const StatusCodesPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -30,19 +31,6 @@ const StatusCodesPage = () => {
       title: "NAME",
       dataIndex: "NAME",
       key: "NAME",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentStatus(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.NAME}
-          </Button>
-        </>
-      ),
     },
     {
       title: "COLOR",
@@ -54,6 +42,26 @@ const StatusCodesPage = () => {
       key: "STATUS",
       dataIndex: "STATUS",
       render: (id) => <Tag color="blue">{id === 0 ? "AKTIV" : "DEAKTIV"}</Tag>,
+    },
+    {
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
+      render: (_, record) => (
+        <div className="">
+          <Button
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentStatus(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+        </div>
+      ),
     },
   ];
   async function getData() {

@@ -11,6 +11,7 @@ import {
   fetchSysBrandsByParam,
   fetchUpdateSysBrand,
 } from "../../services/sys_service";
+import { BsPencilSquare } from "react-icons/bs";
 
 const SysBrandPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -34,19 +35,6 @@ const SysBrandPage = () => {
       title: "Ad",
       dataIndex: "NAME",
       key: "NAME",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentBrand(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.NAME}
-          </Button>
-        </>
-      ),
     },
     {
       title: "Kateqoriya",
@@ -73,6 +61,26 @@ const SysBrandPage = () => {
             {parseInt(STATUS) === 0 ? "AKTIV" : "DEAKTIV"}
           </Tag>
         </>
+      ),
+    },
+    {
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
+      render: (_, record) => (
+        <div className="">
+          <Button
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentBrand(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+        </div>
       ),
     },
   ];

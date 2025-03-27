@@ -11,6 +11,7 @@ import EditCategoryModal from "../../components/Modal/client/EditCategoryModal";
 import NewCategoryModal from "../../components/Modal/client/NewCategoryModal";
 import PageTitle from "../../utils/PageTitle";
 import SearchForm from "../../utils/SearchForm";
+import { BsPencilSquare } from "react-icons/bs";
 
 const ClientCategoryPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -34,19 +35,6 @@ const ClientCategoryPage = () => {
       title: "Name",
       dataIndex: "NAME",
       key: "NAME",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentBrand(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.NAME}
-          </Button>
-        </>
-      ),
     },
 
     {
@@ -69,6 +57,26 @@ const ClientCategoryPage = () => {
             {parseInt(STATUS) === 0 ? "AKTIV" : "DEAKTIV"}
           </Tag>
         </>
+      ),
+    },
+    {
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
+      render: (_, record) => (
+        <div className="">
+          <Button
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentBrand(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+        </div>
       ),
     },
   ];

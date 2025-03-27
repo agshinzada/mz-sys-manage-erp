@@ -7,7 +7,6 @@ const EditConnectionModal = ({
   loading,
   handleData,
   current,
-  handleDelete,
 }) => {
   const [form] = Form.useForm();
 
@@ -155,14 +154,6 @@ const EditConnectionModal = ({
               Submit
             </Button>
           </Form.Item>
-          <Button
-            type="primary"
-            danger
-            loading={loading}
-            onClick={handleDelete}
-          >
-            Delete
-          </Button>
         </div>
       </Form>
     </Modal>

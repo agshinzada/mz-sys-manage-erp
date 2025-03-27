@@ -1,7 +1,8 @@
-import { Button, Form, Input, Select, Table, Tag } from "antd";
+import { Button, Form, Input, Popconfirm, Select, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 import formatDateTime from "../../utils/usableFunc";
 import {
+  fetchChangePaymentStatus,
   fetchPayments,
   fetchPaymentsByParam,
 } from "../../services/payment_service";
@@ -9,6 +10,7 @@ import DeviceDetailModal from "../../components/Modal/DeviceDetailModal";
 import { fetchDeviceById } from "../../services/device_service";
 import { useAuth } from "../../context/AuthContext";
 import PageTitle from "../../utils/PageTitle";
+import Swal from "sweetalert2";
 
 const PaymentListPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -75,21 +77,6 @@ const PaymentListPage = () => {
       ),
     },
     {
-      title: "Sign",
-      dataIndex: "sign",
-      key: "sign",
-    },
-    {
-      title: "Ficheref",
-      dataIndex: "ficheref",
-      key: "ficheref",
-    },
-    {
-      title: "Trcode",
-      dataIndex: "trcode",
-      key: "trcode",
-    },
-    {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
@@ -107,7 +94,17 @@ const PaymentListPage = () => {
       key: "status",
       render: (_, record) => (
         <>
-          <Tag color={record.STATUS_COLOR}>{record.STATUS_NAME}</Tag>
+          <Popconfirm
+            title="Sifariş statusu yeniləməsi"
+            onConfirm={() => reloadOrder(record.rec_i)}
+            onCancel={() => deleteOrder(record.rec_i)}
+            okText="Yenidən yüklə"
+            cancelText="Sifarişi ləğv et"
+          >
+            <Tag color={record?.STATUS_COLOR} className="cursor-pointer">
+              {record?.STATUS_NAME}
+            </Tag>
+          </Popconfirm>
         </>
       ),
     },
@@ -141,6 +138,53 @@ const PaymentListPage = () => {
     setDeviceModalLoading(false);
   }
 
+  async function reloadOrder(id) {
+    Swal.fire({
+      text: "Ödəniş yenidən yüklənəcək!",
+      showCancelButton: true,
+      confirmButtonText: "Bəli",
+      cancelButtonText: "İmtina",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await fetchChangePaymentStatus(
+          {
+            recordId: id,
+            status: 0,
+          },
+          user.TOKEN
+        );
+        if (res.error) {
+          Swal.fire("Sistem xətası", res.response.ErrorMessage, "error");
+        } else {
+          Swal.fire("Status güncəlləndi!", "", "success");
+        }
+      }
+    });
+  }
+  async function deleteOrder(id) {
+    Swal.fire({
+      title: "Ödəniş ləğv ediləcək!",
+      showCancelButton: true,
+      confirmButtonText: "Bəli",
+      cancelButtonText: "İmtina",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await fetchChangePaymentStatus(
+          {
+            recordId: id,
+            status: 499,
+          },
+          user.TOKEN
+        );
+        if (res.error) {
+          Swal.fire("Sistem xətası", res.response.ErrorMessage, "error");
+        } else {
+          Swal.fire("Status güncəlləndi!", "", "success");
+        }
+      }
+    });
+  }
+
   useEffect(() => {
     getPayments();
   }, []);
@@ -163,6 +207,7 @@ const PaymentListPage = () => {
             <Form.Item
               label="Param"
               name="param"
+              className="w-full"
               rules={[
                 {
                   required: true,
@@ -188,12 +233,17 @@ const PaymentListPage = () => {
                     value: 4,
                     label: "Client code",
                   },
+                  {
+                    value: 5,
+                    label: "Status",
+                  },
                 ]}
               />
             </Form.Item>
             <Form.Item
               label="Value"
               name="value"
+              className="w-full"
               rules={[
                 {
                   required: true,
@@ -218,7 +268,7 @@ const PaymentListPage = () => {
         <Table
           columns={columns}
           dataSource={dataSource}
-          rowKey={(record) => record.record_id}
+          rowKey={(record) => record.rec_i}
           loading={loading}
           pagination={{ pageSize: 50 }}
         />

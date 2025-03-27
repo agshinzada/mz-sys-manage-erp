@@ -14,6 +14,8 @@ import ChangePasswordModal from "../../components/Modal/ChangePasswordModal";
 import bcrypt from "bcryptjs";
 import { useAuth } from "../../context/AuthContext";
 import PageTitle from "../../utils/PageTitle";
+import { MdOutlinePassword } from "react-icons/md";
+import { BsPencilSquare } from "react-icons/bs";
 
 const SysUsersPage = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -40,19 +42,6 @@ const SysUsersPage = () => {
       title: "Username",
       dataIndex: "USERNAME",
       key: "USERNAME",
-      render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              setCurrentData(record);
-              setEditIsOpen(true);
-            }}
-          >
-            {record.USERNAME}
-          </Button>
-        </>
-      ),
     },
     {
       title: "Role",
@@ -72,12 +61,27 @@ const SysUsersPage = () => {
         </>
       ),
     },
+
     {
-      title: "Pass",
+      title: "Actions",
+      dataIndex: "active",
+      key: "active",
       render: (_, record) => (
-        <>
+        <div className="">
           <Button
-            type="link"
+            size="small"
+            className="mr-2"
+            icon={<BsPencilSquare />}
+            onClick={() => {
+              setCurrentData(record);
+              setEditIsOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Button
+            size="small"
+            icon={<MdOutlinePassword />}
             onClick={() => {
               setCurrentData(record);
               setChangePassIsOpen(true);
@@ -85,7 +89,7 @@ const SysUsersPage = () => {
           >
             Şifrəni dəyiş
           </Button>
-        </>
+        </div>
       ),
     },
   ];

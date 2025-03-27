@@ -59,6 +59,9 @@ const MenuItem = () => {
       [
         getItem("Cihazlar", 24, "", null, ["ADMIN"]),
         getItem("Connections", 25, "", null, ["ADMIN"]),
+        getItem("İstifadəçilər", 36, "", null, ["ADMIN"]),
+        getItem("Servislər", 37, "", null, ["ADMIN"]),
+        getItem("Tasklar", 38, "", null, ["ADMIN"]),
       ],
       ["ADMIN"]
     ),
@@ -204,6 +207,18 @@ const MenuItem = () => {
       case 25:
         navigate("mobim/connections");
         selectedToLocal(25, "mobim/connections");
+        break;
+      case 36:
+        navigate("mobim/users");
+        selectedToLocal(36, "mobim/users");
+        break;
+      case 37:
+        navigate("mobim/services");
+        selectedToLocal(37, "mobim/services");
+        break;
+      case 38:
+        navigate("mobim/tasks");
+        selectedToLocal(38, "mobim/tasks");
         break;
 
       case 29:

@@ -62,7 +62,7 @@ export async function fetchOrderLinesById(data, token) {
 
 export async function fetchChangeOrderStatus(data, token) {
   try {
-    const response = await axios.post(
+    const response = await axios.put(
       `${import.meta.env.VITE_API_URL}/orders/status?token=${token}`,
       data
     );
