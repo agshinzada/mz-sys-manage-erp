@@ -1,6 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
+import "@ant-design/v5-patch-for-react-19";
+import "leaflet/dist/leaflet.css";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage.jsx";
@@ -35,6 +37,8 @@ import OrderkindCodesPage from "./pages/sys/OrderkindCodesPage.jsx";
 import MobimUserPage from "./pages/mobim/MobimUserPage.jsx";
 import MobimTaskPage from "./pages/mobim/MobimTaskPage.jsx";
 import MobimServicePage from "./pages/mobim/MobimServicePage.jsx";
+import ClientsPage from "./pages/ClientsPage.jsx";
+import ClientDetailViewPage from "./pages/ClientDetailViewPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -68,7 +72,7 @@ const router = createBrowserRouter([
         path: "payments/list",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <PaymentListPage />,{" "}
+            <PaymentListPage />
           </PrivateRoute>
         ),
       },
@@ -76,7 +80,7 @@ const router = createBrowserRouter([
         path: "payments/remain",
         element: (
           <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
-            <PaymentRemainPage />,{" "}
+            <PaymentRemainPage />
           </PrivateRoute>
         ),
       },
@@ -84,7 +88,7 @@ const router = createBrowserRouter([
         path: "client/category",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <ClientCategoryPage />,{" "}
+            <ClientCategoryPage />
           </PrivateRoute>
         ),
       },
@@ -92,7 +96,7 @@ const router = createBrowserRouter([
         path: "client/discounts",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <DiscountPage />,{" "}
+            <DiscountPage />
           </PrivateRoute>
         ),
       },
@@ -100,7 +104,7 @@ const router = createBrowserRouter([
         path: "client/campaigns",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <CampaignPage />,{" "}
+            <CampaignPage />
           </PrivateRoute>
         ),
       },
@@ -108,7 +112,7 @@ const router = createBrowserRouter([
         path: "client/delivery",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <DeliveryPage />,{" "}
+            <DeliveryPage />
           </PrivateRoute>
         ),
       },
@@ -116,7 +120,7 @@ const router = createBrowserRouter([
         path: "client/visits",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <VisitDayPage />,{" "}
+            <VisitDayPage />
           </PrivateRoute>
         ),
       },
@@ -124,7 +128,7 @@ const router = createBrowserRouter([
         path: "client/users",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <ClientUsersPage />,{" "}
+            <ClientUsersPage />
           </PrivateRoute>
         ),
       },
@@ -132,7 +136,7 @@ const router = createBrowserRouter([
         path: "client/bulk",
         element: (
           <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
-            <BulkClientPage />,{" "}
+            <BulkClientPage />
           </PrivateRoute>
         ),
       },
@@ -140,7 +144,7 @@ const router = createBrowserRouter([
         path: "client/logs",
         element: (
           <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
-            <LogPage />,{" "}
+            <LogPage />
           </PrivateRoute>
         ),
       },
@@ -148,7 +152,7 @@ const router = createBrowserRouter([
         path: "setting/users",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <SysUsersPage />,{" "}
+            <SysUsersPage />
           </PrivateRoute>
         ),
       },
@@ -156,7 +160,7 @@ const router = createBrowserRouter([
         path: "setting/brands",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <SysBrandPage />,{" "}
+            <SysBrandPage />
           </PrivateRoute>
         ),
       },
@@ -164,7 +168,7 @@ const router = createBrowserRouter([
         path: "setting/regions",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <SysRegionPage />,{" "}
+            <SysRegionPage />
           </PrivateRoute>
         ),
       },
@@ -172,7 +176,7 @@ const router = createBrowserRouter([
         path: "setting/status",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <StatusCodesPage />,{" "}
+            <StatusCodesPage />
           </PrivateRoute>
         ),
       },
@@ -180,7 +184,7 @@ const router = createBrowserRouter([
         path: "setting/status/orderkind",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <OrderkindCodesPage />,{" "}
+            <OrderkindCodesPage />
           </PrivateRoute>
         ),
       },
@@ -189,7 +193,7 @@ const router = createBrowserRouter([
         path: "logo/orders",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <LogoOrderPage />,{" "}
+            <LogoOrderPage />
           </PrivateRoute>
         ),
       },
@@ -197,7 +201,7 @@ const router = createBrowserRouter([
         path: "archive/users",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <ArchiveUsersPage />,{" "}
+            <ArchiveUsersPage />
           </PrivateRoute>
         ),
       },
@@ -205,7 +209,7 @@ const router = createBrowserRouter([
         path: "archive/logs",
         element: (
           <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
-            <ArchiveLogPage />,{" "}
+            <ArchiveLogPage />
           </PrivateRoute>
         ),
       },
@@ -213,7 +217,7 @@ const router = createBrowserRouter([
         path: "mobim/devices",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <MobimDevicePage />,{" "}
+            <MobimDevicePage />
           </PrivateRoute>
         ),
       },
@@ -221,7 +225,7 @@ const router = createBrowserRouter([
         path: "mobim/connections",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <MobimConnectionPage />,{" "}
+            <MobimConnectionPage />
           </PrivateRoute>
         ),
       },
@@ -229,7 +233,7 @@ const router = createBrowserRouter([
         path: "mobim/services",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <MobimServicePage />,{" "}
+            <MobimServicePage />
           </PrivateRoute>
         ),
       },
@@ -237,7 +241,7 @@ const router = createBrowserRouter([
         path: "mobim/tasks",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <MobimTaskPage />,{" "}
+            <MobimTaskPage />
           </PrivateRoute>
         ),
       },
@@ -245,7 +249,7 @@ const router = createBrowserRouter([
         path: "mobim/users",
         element: (
           <PrivateRoute allowedRoles={["ADMIN"]}>
-            <MobimUserPage />,{" "}
+            <MobimUserPage />
           </PrivateRoute>
         ),
       },
@@ -253,7 +257,23 @@ const router = createBrowserRouter([
         path: "report/retrification",
         element: (
           <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
-            <RetrificationReportPage />,{" "}
+            <RetrificationReportPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "clients/list",
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
+            <ClientsPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "clients/detail/:clientId",
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
+            <ClientDetailViewPage />
           </PrivateRoute>
         ),
       },

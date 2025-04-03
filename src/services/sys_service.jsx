@@ -117,6 +117,30 @@ export async function fetchSysBrands(token) {
   }
 }
 
+export async function fetchClientsBySearch(value, token) {
+  try {
+    const response = await axios.get(
+      `${
+        import.meta.env.VITE_API_URL
+      }/sys/clients/search/${value}?token=${token}`
+    );
+    return response.data;
+  } catch (error) {
+    notification.error({ message: error.response.data });
+  }
+}
+
+export async function fetchClientById(value, token) {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/sys/clients/${value}?token=${token}`
+    );
+    return response.data;
+  } catch (error) {
+    notification.error({ message: error.response.data });
+  }
+}
+
 export async function fetchSysBrandsByParam(value, token) {
   try {
     const response = await axios.get(

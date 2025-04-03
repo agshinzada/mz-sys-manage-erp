@@ -6,7 +6,7 @@ import { IoDocumentLockOutline } from "react-icons/io5";
 import { IoIosCash, IoMdArchive } from "react-icons/io";
 import { GoDatabase } from "react-icons/go";
 import { ImProfile } from "react-icons/im";
-import { MdDashboard, MdOutlineSettings } from "react-icons/md";
+import { MdDashboard, MdOutlineSettings, MdPersonSearch } from "react-icons/md";
 import { useSite } from "../../context/SiteContext";
 import { useAuth } from "../../context/AuthContext";
 
@@ -29,6 +29,10 @@ const MenuItem = () => {
 
   const items = [
     getItem("Dashboard", 31, <MdDashboard size={"1.3rem"} />, null, [
+      "ADMIN",
+      "MODERATOR",
+    ]),
+    getItem("Müştərilər", 39, <MdPersonSearch size={"1.3rem"} />, null, [
       "ADMIN",
       "MODERATOR",
     ]),
@@ -228,6 +232,10 @@ const MenuItem = () => {
       case 31:
         navigate("dashboard");
         selectedToLocal(31, "dashboard");
+        break;
+      case 39:
+        navigate("clients/list");
+        selectedToLocal(39, "clients/list");
         break;
 
       default:
