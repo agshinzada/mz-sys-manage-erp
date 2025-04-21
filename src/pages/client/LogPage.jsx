@@ -97,7 +97,7 @@ const LogPage = () => {
           pagination={true}
           rowKey={(record) => record.ID}
           loading={loading}
-          // scroll={{ x: "max-content" }}
+          scroll={{ x: "max-content" }}
         />
       </div>
     </div>

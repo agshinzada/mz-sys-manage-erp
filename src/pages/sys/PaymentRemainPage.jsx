@@ -170,6 +170,7 @@ const PaymentRemainPage = () => {
           pagination={false}
           rowKey={(record) => record.RUT}
           loading={loading}
+          scroll={{ x: "max-content" }}
         />
       </div>
     </div>

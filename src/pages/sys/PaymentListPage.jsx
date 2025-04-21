@@ -1,4 +1,13 @@
-import { Button, Form, Input, Popconfirm, Select, Table, Tag } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Popconfirm,
+  Select,
+  Table,
+  Tag,
+  Tooltip,
+} from "antd";
 import { useEffect, useState } from "react";
 import formatDateTime from "../../utils/usableFunc";
 import {
@@ -64,14 +73,14 @@ const PaymentListPage = () => {
       title: "Client code",
       dataIndex: "clientcode",
       key: "clientcode",
-      render: (_, { clientcode }) => (
+      render: (_, record) => (
         <>
-          {clientcode === "YUKLEME" ? (
-            <Tag color="green" key={clientcode}>
+          {record.clientcode === "YUKLEME" ? (
+            <Tag color="green" key={record.clientcode}>
               ANBAR SƏNƏDİ
             </Tag>
           ) : (
-            clientcode
+            <Tooltip title={record.DEFINITION_}>{record.clientcode}</Tooltip>
           )}
         </>
       ),
@@ -271,6 +280,7 @@ const PaymentListPage = () => {
           rowKey={(record) => record.rec_i}
           loading={loading}
           pagination={{ pageSize: 50 }}
+          scroll={{ x: "max-content" }}
         />
       </div>
       <DeviceDetailModal

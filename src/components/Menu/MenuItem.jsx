@@ -81,6 +81,7 @@ const MenuItem = () => {
         getItem("Vizit günləri", 12, "", null, ["ADMIN"]),
         getItem("İstifadəçilər", 13, "", null, ["ADMIN"]),
         getItem("Toplu müştəri", 14, "", null, ["ADMIN", "MODERATOR"]),
+        // getItem("Toplu stiker", 40, "", null, ["ADMIN", "MODERATOR"]),
         getItem("Loglar", 16, "", null, ["ADMIN", "MODERATOR"]),
       ],
       ["ADMIN", "MODERATOR"]
@@ -168,6 +169,10 @@ const MenuItem = () => {
         navigate("client/bulk");
         selectedToLocal(14, "client/bulk");
         break;
+      case 40:
+        navigate("client/bulk/sticker");
+        selectedToLocal(40, "client/bulk/sticker");
+        break;
       case 16:
         navigate("client/logs");
         selectedToLocal(16, "client/logs");
@@ -224,7 +229,6 @@ const MenuItem = () => {
         navigate("mobim/tasks");
         selectedToLocal(38, "mobim/tasks");
         break;
-
       case 29:
         navigate("report/retrification");
         selectedToLocal(29, "report/retrification");

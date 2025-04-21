@@ -1,4 +1,13 @@
-import { Button, Form, Input, Popconfirm, Select, Table, Tag } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Popconfirm,
+  Select,
+  Table,
+  Tag,
+  Tooltip,
+} from "antd";
 import { useEffect, useState } from "react";
 import {
   fetchChangeOrderStatus,
@@ -102,14 +111,14 @@ const OrderListPage = () => {
       title: "Client code",
       dataIndex: "clientcode",
       key: "clientcode",
-      render: (_, { clientcode }) => (
+      render: (_, record) => (
         <>
-          {clientcode === "YUKLEME" ? (
-            <Tag color="green" key={clientcode}>
+          {record.clientcode === "YUKLEME" ? (
+            <Tag color="green" key={record.clientcode}>
               ANBAR SƏNƏDİ
             </Tag>
           ) : (
-            clientcode
+            <Tooltip title={record.DEFINITION_}>{record.clientcode}</Tooltip>
           )}
         </>
       ),
@@ -315,7 +324,7 @@ const OrderListPage = () => {
           rowKey={(record) => record.record_id}
           loading={loading}
           pagination={{ pageSize: 50 }}
-          // scroll={{ x: "max-content" }}
+          scroll={{ x: "max-content" }}
         />
       </div>
       <OrderLineModal

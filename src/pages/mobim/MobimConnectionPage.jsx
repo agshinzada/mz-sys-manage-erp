@@ -195,6 +195,7 @@ const MobimConnectionPage = () => {
             type: "radio",
             ...rowSelection,
           }}
+          scroll={{ x: "max-content" }}
         />
       </div>
       <CopyConnectionModal

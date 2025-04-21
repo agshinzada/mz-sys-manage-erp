@@ -71,7 +71,7 @@ const MobimUserPage = () => {
         pagination={false}
         rowKey={(record) => record.rec_id}
         loading={loading}
-        // scroll={{ x: "max-content" }}
+        scroll={{ x: "max-content" }}
       />
     </div>
   );

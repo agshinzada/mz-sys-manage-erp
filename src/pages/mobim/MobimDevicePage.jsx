@@ -180,7 +180,7 @@ const MobimDevicePage = () => {
             type: "radio",
             ...rowSelection,
           }}
-          // scroll={{ x: "max-content" }}
+          scroll={{ x: "max-content" }}
         />
       </div>
       <EditDeviceModal

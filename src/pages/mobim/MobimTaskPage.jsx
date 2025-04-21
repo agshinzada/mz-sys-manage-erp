@@ -221,7 +221,7 @@ const MobimTaskPage = () => {
           type: "checkbox",
           onChange: handleCheck,
         }}
-        // scroll={{ x: "max-content" }}
+        scroll={{ x: "max-content" }}
       />
     </div>
   );

@@ -176,7 +176,7 @@ const ClientUsersPage = () => {
           pagination={false}
           rowKey={(record) => record.ID}
           loading={loading}
-          // scroll={{ x: "max-content" }}
+          scroll={{ x: "max-content" }}
         />
       </div>
       <EditUserModal

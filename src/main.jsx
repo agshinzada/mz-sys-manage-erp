@@ -39,6 +39,7 @@ import MobimTaskPage from "./pages/mobim/MobimTaskPage.jsx";
 import MobimServicePage from "./pages/mobim/MobimServicePage.jsx";
 import ClientsPage from "./pages/ClientsPage.jsx";
 import ClientDetailViewPage from "./pages/ClientDetailViewPage.jsx";
+import BulkStickerPage from "./pages/client/BulkStickerPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -137,6 +138,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
             <BulkClientPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "client/bulk/sticker",
+        element: (
+          <PrivateRoute allowedRoles={["ADMIN", "MODERATOR"]}>
+            <BulkStickerPage />
           </PrivateRoute>
         ),
       },

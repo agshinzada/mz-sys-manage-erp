@@ -153,7 +153,7 @@ const MobimServicePage = () => {
         pagination={false}
         rowKey={(record) => record.id}
         loading={loading}
-        // scroll={{ x: "max-content" }}
+        scroll={{ x: "max-content" }}
       />
       <EditServiceModal
         isOpen={isOpen}
